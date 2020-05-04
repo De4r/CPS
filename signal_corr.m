@@ -1,11 +1,10 @@
 function r = signal_corr(x, y, scale)
 %   signal_corr
-%   Summary of this function goes here
-%   Detailed explanation goes here
-%   x - sygnal x, y - sygnal y
-%   scale 0: - brak
-%         1: - normalizacja obciazona
-%         2: - normalizacja nieobciazona
+%   Auto and cross correlation if passed signals
+%   x - signal x, y - signal y (sygnaly)
+%   scale 0: - none (brak)
+%         1: - biased (normalizacja obciazona)
+%         2: - unbiased (normalizacja nieobciazona)
 if size(x) == size(y);
 	N = length(x);
 	r = zeros(size(x));

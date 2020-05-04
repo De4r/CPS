@@ -1,7 +1,6 @@
 function cwq = signal_cwq(signal)
-%   center weight of signal quadrature
-%   Summary of this function goes here
-%   Detailed explanation goes here
+%   Center weight of signal quadrature
+%   signal - signal
 licznik = 0; mianownik = 0;
 for i=1:length(signal)
    licznik = licznik + i * signal(i)^2;

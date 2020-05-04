@@ -1,7 +1,6 @@
 function X = signal_fft(x)
 %	signal_fft
-%   Summary of this function goes here
-%   Detailed explanation goes here
+%   FFT of signal
 %   x -signal, xf - fourier result
 %   For length N input vector x, the DFT is a length N vector X,
 %   with elements

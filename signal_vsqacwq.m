@@ -1,8 +1,8 @@
 function vsqacwq = signal_vsqacwq(signal)
-%   variance of signal quadrature around center of quadarture signal weight
+%   variance of signal quadrature around center of weight of quadarture signal
 %   xD
-%   Summary of this function goes here
-%   Detailed explanation goes here
+%   Retuns variance of singal quadrature around center of weight of quadrature singal
+%   
 cwq = signal_cwq(signal);
 licznik = 0; mianownik = 0;
 for i=1:length(signal)

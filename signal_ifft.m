@@ -1,7 +1,6 @@
 function x = signal_ifft(X)
 %	signal_ifft
-%   Summary of this function goes here
-%   Detailed explanation goes here
+%   Inverse FFT
 %   X -signal, x - signal in time
 %   For length N input vector x, the DFT is a length N vector X,
 %   with elements

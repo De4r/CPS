@@ -1,7 +1,6 @@
 function std_value = signal_std(signal)
 %	signal_std 
-%	Summary of this function goes here
-%   Detailed explanation goes here
+%	Retruns standard deviation
 std_value = 0;
 signal_mean_value = signal_mean(signal);
 for i=1:length(signal)

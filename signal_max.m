@@ -1,7 +1,6 @@
 function max_value = signal_max(signal)
 %	signal_max 
-%	Summary of this function goes here
-%   Detailed explanation goes here
+%	Returns max value of signal
 max_value = 0;
 for i=1:length(signal)
     if signal(i) > max_value

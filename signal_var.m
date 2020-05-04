@@ -1,7 +1,6 @@
 function var_value = signal_var(signal)
-%	signal_std 
-%	Summary of this function goes here
-%   Detailed explanation goes here
+%	signal_var
+%	Returns signal variance
 var_value = 0;
 signal_mean_value = signal_mean(signal);
 for i=1:length(signal)

@@ -1,7 +1,6 @@
 function value = signal_rs(signal)
 %	signal mean quadrature wdith ?
-%   Summary of this function goes here
-%   Detailed explanation goes here
+%   Retruns signals mean quadrature width
 value = sqrt(signal_vsqacwq(signal));
 end
 
