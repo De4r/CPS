@@ -77,8 +77,7 @@ for i=1:4
 end
 
 %% Æwiczenie: Projektowanie nierekursywnych filtrów cyfrowych
-% metod¹ próbkowania w dziedzinie
-% czêstotliwoœci i optymalizacji œredniokwadratowej
+
 % Projektowanie filtrów FIR metod¹ WA¯ONEJ minimalizacji b³êdu œredniokwadratowego
 % pomiêdzy zadan¹ charakterystyk¹, spróbkowan¹ w dziedzinie czêstotliwoœci, a charakterystyk¹ otrzymywan¹
 
@@ -334,10 +333,11 @@ plot(fz,20*log10(H),'b'); grid; title('Wynikowe H(f) w dB');
 
  %% Æwiczenie: Projektowanie specjalnych filtrów cyfrowych metod¹ okien
  % Parametry
- M = 20; N = 2*M+1; n=1:M;
+
  typ = ["Hilberta", "ró¿niczkuj¹cy", "interpoluj¹cy"];
  
  for i=1:3
+     M = 20; N = 2*M+1; n=1:M;
      % Generowanie polowy odpowiedzi impulsowej
     if(i==1)
         h = 2/pi*sin(pi*n/2).^2 ./ n;   % Odp impulsowa filtra Hilberta
@@ -395,8 +395,9 @@ plot(fz,20*log10(H),'b'); grid; title('Wynikowe H(f) w dB');
        else
            % Filtr rozniczkujacy
            Ny = ceil(fpr/fx); k=1:Ny;
-           plot(k, xp(k), 'b', k, yp(k), 'r');
-           title('Sygnal filtrowany filtrem rozczkujacym');
+           plot(k, xp(k), 'b', k, yp(k), 'ro');
+           yp
+           title('Sygnal filtrowany filtrem rozniczkujacym');
        end
     end
     if (i==3)
