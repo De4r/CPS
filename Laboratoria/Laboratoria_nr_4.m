@@ -23,7 +23,9 @@ figure(1)
 sgtitle('Fala prostok¹tna bipolarna');
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w) ...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 %% Sygnal prost¹ktny unipolarny wype³nienie 1/2
@@ -35,7 +37,9 @@ figure(2)
 sgtitle('Fala prostok¹tna unipolarna wyplenienie 1/2');
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w) ...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 %% Sygnal prost¹ktny unipolarny o dowolonym wypelnieniu
@@ -48,7 +52,9 @@ figure(3)
 sgtitle(['Fala prostok¹tna unipolarna wyplenienie ' num2str(tau)]);
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w) ...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 %% Sygnal trojkatny bipolarny
@@ -60,7 +66,9 @@ figure(4)
 sgtitle(['Fala trojkatna bipolarna']);
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w)...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 %% Sygnal trojkatny bipolarny piloksztaltny
@@ -72,7 +80,9 @@ figure(5)
 sgtitle(['Fala trojkatna bipolarna pi³opkszta³tna']);
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w) ...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 %% Sygnal trojkatny unipolarny 
@@ -84,7 +94,9 @@ figure(6)
 sgtitle(['Fala trojkatna unipolarna']);
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w) ...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 %% Sygnal trojkatny unipolarna piloksztaltna
@@ -96,7 +108,9 @@ figure(7)
 sgtitle(['Fala trojkatna unipolarna pi³okszta³tna']);
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w) ...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 %% Sygnal sinusoidalny wyprostowany dwupo³ówkowy
@@ -108,7 +122,9 @@ figure(8)
 sgtitle(['Fala sinusoidalna wyprostowana dwupo³ówkowa']);
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w) ...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 %% Sygnal sinusoidalny wyprostowany jednopo³owkowy
@@ -116,22 +132,24 @@ end
 y = swj(w, A, t, n);
 
 % Wykresy
-figure(7)
+figure(9)
 sgtitle(['Fala sinusoidalna wyprostowana jednopo³owkowa']);
 for i=1:length(n) 
     subplot(length(n),1,i)
-    plot(t, y(i,:)); title(['Fala dla: w=' num2str(w) ' n=' num2str(n(i)) ' A=' num2str(A)]);
+    plot(t, y(i,:));
+    title(['Fala dla: w=' num2str(w) ...
+        ' n=' num2str(n(i)) ' A=' num2str(A)]);
 end
 
 
 
-% %%%%%%%%%%% DEFINICJE FUNKCJI %%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%% DEFINICJE FUNKCJI %%%%%%%%%%%%%%%%%%%
 % 
 % 
 % % Definicja funkcji 1
 % function x = sbp(w, A, t, n)
 %     % Funcja generuj¹ca fale prostkatna bipolarna
-%     % w - czestotliwosc, A - amplituda
+%     % w - czestoœæ, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t));
 %     for i=1:length(n)
@@ -145,7 +163,7 @@ end
 % % Definicja funkcji 2
 % function x = sup_1_2(w, A, t, n)
 %     % Funcja generuj¹ca fale prostkatna unipolarna o wypelnieniu 1/2
-%     % w - czestotliwosc, A - amplituda
+%     % w - czêstoœæ, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t));
 %     for i=1:length(n)
@@ -161,13 +179,14 @@ end
 % 
 % % Definicja funkcji 3
 % function x = sup_wyp(f, A, t, n, tau)
-%     % Funcja generuj¹ca fale prostkatna unipolarna o dowolnym wypelnieniu
-%     % w - czestotliwosc, A - amplituda
+%     % Funcja generuj¹ca fale prostk. unipolarna o dowolnym wypelnieniu
+%     % f - czestotliwosc, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t)); T = 1/f;
 %     for i=1:length(n)
 %         for j=1:n(i)
-%             x(i,:) = x(i,:) + sin(pi*j*tau/T)*cos(2*j*pi*f*t)/(pi*j*tau/T);
+%             x(i,:) = x(i,:) + ...
+%               sin(pi*j*tau/T)*cos(2*j*pi*f*t)/(pi*j*tau/T);
 %         end       
 %     end
 %     x = A*tau/T + 2*A*tau*x/T;
@@ -176,7 +195,7 @@ end
 % % Definicja funkcji 4
 % function x = tbp(w, A, t, n)
 %     % Funcja generuj¹ca fale trojkatna bipolarna
-%     % w - czestotliwosc, A - amplituda
+%     % w - czêstoœæ, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t));
 %     for i=1:length(n)
@@ -193,7 +212,7 @@ end
 % % Definicja funkcji 5
 % function x = tbpp(w, A, t, n)
 %     % Funcja generuj¹ca fale trojkatna bipolarna pilokszta³tna
-%     % w - czestotliwosc, A - amplituda
+%     % w - czêstoœæ, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t));
 %     for i=1:length(n)
@@ -210,7 +229,7 @@ end
 % % Definicja funkcji 6
 % function x = tup(w, A, t, n)
 %     % Funcja generuj¹ca fale trojkatna unipolarna
-%     % w - czestotliwosc, A - amplituda
+%     % w - czêstoœæ, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t));
 %     for i=1:length(n)
@@ -224,12 +243,12 @@ end
 % % Definicja funkcji 7
 % function x = tupp(w, A, t, n)
 %     % Funcja generuj¹ca fale trojkatna unipolarna pilokszta³tna
-%     % w - czestotliwosc, A - amplituda
+%     % w - czêstoœæ, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t));
 %     for i=1:length(n)
 %         for j=1:n(i)
-%             x(i,:) = x(i,:) + ((1/j)*sin(j*w*t));
+%             x(i,:) = x(i,:) - ((1/j)*sin(j*w*t));
 %         end   
 %     end
 %     x = x*A/pi + A/2;
@@ -238,7 +257,7 @@ end
 % % Definicja funkcji 8
 % function x = swd(w, A, t, n)
 %     % Funcja generuj¹ca fale sinusoidalna wyprostowana dwupo³owkow¹
-%     % w - czestotliwosc, A - amplituda
+%     % w - czêstoœæ, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t));
 %     for i=1:length(n)
@@ -252,7 +271,7 @@ end
 % % Definicja funkcji 9
 % function x = swj(w, A, t, n)
 %     % Funcja generuj¹ca fale sinusoidalna wyprostowana jednopo³owkow¹
-%     % w - czestotliwosc, A - amplituda
+%     % w - czêstoœæ, A - amplituda
 %     % t - wektor czasu, n - rzad ciagu
 %     x=zeros(length(n), length(t));
 %     for i=1:length(n)

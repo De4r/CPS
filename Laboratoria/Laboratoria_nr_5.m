@@ -200,7 +200,7 @@ end
 
 % Obliczenie FFT
 [f_w, M, W] = fft_from_signal(y, fs);
-figure(12);
+figure(14);
 sgtitle(['Analiza widmowa fali trojkatnej pi這kszta速nej']);
 for i=1:length(n)
     subplot(2,length(n),i)
@@ -216,7 +216,7 @@ end
 y = swd(w, A, t, n);
 
 % Wykresy
-figure(13)
+figure(15)
 sgtitle(['Fala sinusoidalna wyprostowana dwupo堯wkowa']);
 for i=1:length(n) 
     subplot(length(n),1,i)
@@ -225,7 +225,7 @@ end
 
 % Obliczenie FFT
 [f_w, M, W] = fft_from_signal(y, fs);
-figure(14);
+figure(16);
 sgtitle(['Analiza widmowa fali sinusoidalnej wyprostowanej dwupo堯wkowej']);
 for i=1:length(n)
     subplot(2,length(n),i)
@@ -241,7 +241,7 @@ end
 y = swj(w, A, t, n);
 
 % Wykresy
-figure(15)
+figure(17)
 sgtitle(['Fala sinusoidalna wyprostowana jednopo這wkowa']);
 for i=1:length(n) 
     subplot(length(n),1,i)
@@ -250,7 +250,7 @@ end
 
 % Obliczenie FFT
 [f_w, M, W] = fft_from_signal(y, fs);
-figure(16);
+figure(18);
 sgtitle(['Analiza widmowa fali sinusoidalnej wyprostowanej jednopo這wkowej']);
 for i=1:length(n)
     subplot(2,length(n),i)
@@ -268,13 +268,13 @@ R=1000; C=10^(-6);
 L=[1]; M=[(R*C) 1]; % Licznik, Mianownik
 sys=tf(L,M) % Transfer function (licznik, mianownik)
 % Wykresy analizy uk豉du
-figure(17)
-freqs(L,M)      % analiza amplitudowo i fazowo - czestotliwosciowa
-figure(18)
-impulse(L,M)	% odpowiedz impulsowa ukladu
 figure(19)
-step(L,M)       % odpowiedz skokowa ukladu
+freqs(L,M)      % analiza amplitudowo i fazowo - czestotliwosciowa
 figure(20)
+impulse(L,M)	% odpowiedz impulsowa ukladu
+figure(21)
+step(L,M)       % odpowiedz skokowa ukladu
+figure(22)
 iopzplot(sys)   % wykres zer i biegunow dla ukladow wej/ wyj
 [z,p,k]=tf2zp(L,M)  % konwersja Transfer Function na zera i bieguny
 
@@ -284,27 +284,18 @@ R=1000; C=10^(-6); Li=1;
 L=[1]; M=[(Li*C) (R*C) 1]; % licznik i mianownik
 sys=tf(L,M)	% Transfer function (licznik, mianownik)
 % Wykresy analizy uk豉du
-figure(21)
-freqs(L,M)      % analiza amplitudowo i fazowo - czestotliwosciowa
-figure(22)
-impulse(L,M)    % odpowiedz impulsowa ukladu
 figure(23)
-step(L,M)       % odpowiedz skokowa ukladu
+freqs(L,M)      % analiza amplitudowo i fazowo - czestotliwosciowa
 figure(24)
+impulse(L,M)    % odpowiedz impulsowa ukladu
+figure(25)
+step(L,M)       % odpowiedz skokowa ukladu
+figure(26)
 iopzplot(sys)   % wykres zer i biegunow dla ukladow wej/ wyj
 [z,p,k]=tf2zp(L,M)  % konwersja Transfer Function na zera i bieguny
 
 
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%% DEFINICJA FUNKCI %%%%%%%%%%%%%%%%%
+%% DEFINICJA FUNKCI %%%%%%%%%%%%%%%%%
 % function [f, M, W] = fft_from_signal(y, fs)
 % %	fft_from_signal 
 % %   Summary of this function goes here

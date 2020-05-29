@@ -1,6 +1,6 @@
 function x = swd(w, A, t, n)
 % Funcja generuj¹ca fale sinusoidalna wyprostowana dwupo³owkow¹
-% w - czestotliwosc, A - amplituda
+% w - czêstoœæ, A - amplituda
 % t - wektor czasu, n - rzad ciagu
 x=zeros(length(n), length(t));
 for i=1:length(n)

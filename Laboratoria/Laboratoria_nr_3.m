@@ -36,11 +36,14 @@ ym3=sin(2*pi*10*t).*sin(2*pi*1000*t).*exp(-alfa2*t);
 figure(2)
 subplot(2,2,1); plot(t, ym); title('Modulacja amplitudy');
 subplot(2,2,2); plot(t, ym1); title('Modulacja  amplitudy');
-subplot(2,2,3); plot(t, ym2); title('Modulacja amplitudy wraz z t³umieniem');
-subplot(2,2,4); plot(t, ym3); title('Modulacja amplitudy wraz z t³umieniem');
+subplot(2,2,3); plot(t, ym2);
+title('Modulacja amplitudy wraz z t³umieniem');
+subplot(2,2,4); plot(t, ym3);
+title('Modulacja amplitudy wraz z t³umieniem');
 sgtitle('Sygna³y modulowane');
 % Odtworzenie sygna³ów
-sound(ym); pause(t(end)); sound(ym1); pause(t(end)); sound(ym2); pause(t(end)); sound(ym3);
+sound(ym); pause(t(end)); sound(ym1); pause(t(end));
+sound(ym2); pause(t(end)); sound(ym3);
 
 %% Po³¹czenie sygna³ow w 2 kana³y i zapis pliku wav
 % Po³¹czenie przebiegów i ich zapis
@@ -49,7 +52,8 @@ audiowrite('plik2.wav', Y, Fs);
 % Odczyt z pliku, wykresy kana³ów oraz odtworzenie dzwiêku
 [Y1, Fs] = audioread('plik2.wav');
 figure(3)
-plot(Y1(:, 1)); hold on; plot(Y1(:, 2), 'r'); hold off; title('Polaczone sygnaly');
+plot(Y1(:, 1)); hold on; plot(Y1(:, 2), 'r');
+hold off; title('Polaczone sygnaly');
 sound(Y1, Fs); pause(t(end));
 
 %% Po³¹czone sygna³y: sygna³ t³umiony i narastaj¹cy
@@ -59,6 +63,7 @@ Y2 = [ym2; ym4]';
 audiowrite('plik3.wav', Y2, Fs);
 % Odczyt sygna³u, wykres i odtworzenie dzwiêku
 [Y3, Fs] = audioread('plik3.wav');
-figure(3)
-plot(Y3(:, 1)); hold on; plot(Y3(:, 2), 'r'); hold off; title('Polaczone sygnaly');
+figure(4)
+plot(Y3(:, 1)); hold on; plot(Y3(:, 2), 'r.-');
+hold off; title('Polaczone sygnaly');
 sound(Y3, Fs); pause(t(end));

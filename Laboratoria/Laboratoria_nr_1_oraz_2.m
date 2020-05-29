@@ -1,12 +1,13 @@
 %% Lab 1 - operacje wejscia wyjscia - Mateusz Krupnik
 % Generowanie przebiegu sinosuidalnego
+clc; close all; clear all;
 t=0:0.001:1;
 A=0.7;
 f=100;
 omega=2*pi*f;
 y=A*sin(omega*t);
 % wykres 
-figure(3)
+figure(1)
 plot(t,y)
 % Otwarcie pliku w trybie zapisywania
 uchwyt=fopen('uchwyt.txt','w');
@@ -19,14 +20,14 @@ uchwyt=fopen('uchwyt.txt','r');
 DANE=fscanf(uchwyt,'%g %g \n',[2 inf]);
 fclose('all');
 % Wykres
-figure(4)
+figure(2)
 plot(DANE(1,:),DANE(2,:))
 
 %% Lab 2 - operacje wejscia wyjscia i parametry sygna³ów - Mateusz Krupnik
 % Wyczyszczenie ekranu i generowanie przebiegów sinusoidalnych
 clc
 clear all
-close all
+
 A=0.5;
 B=-0.3;
 f1=700;
@@ -61,8 +62,8 @@ uchwyt1=fopen('dane1.bin','r');
 y5=fread(uchwyt1,[5 inf],'float');
 fclose('all');
 
-% Wykresy wygenerowanych przezbiegów
-figure(1)
+% Wykresy wygenerowanych przebiegów
+figure(3)
 subplot(2,2,1)
 plot(t,y1); title('y1');
 subplot(2,2,2)
@@ -74,7 +75,7 @@ plot(t,y4,'g'); title('y4');
 sgtitle('Dane wygenerowane')
 
 % Wykresy danych odczytanych z pliku .txt
-figure(2)
+figure(4)
 subplot(2,2,1)
 plot(D(1,:),D(2,:))
 subplot(2,2,2)
@@ -86,7 +87,7 @@ plot(D(1,:),D(5,:),'g')
 sgtitle('Dane odczytane z .txt')
 
 % Wykresy danych odczytanych z pliku .bin - wykres y5
-figure(3)
+figure(5)
 subplot(2,2,1)
 plot(t,y1); title('y1');
 subplot(2,2,2)
@@ -103,9 +104,11 @@ sgtitle('Dane odczytane z .bin')
 a = [signal_min(y1) signal_min(y2) signal_min(y3) signal_min(y4)]
 b = [signal_max(y1) signal_max(y2) signal_max(y3) signal_max(y4)]
 % Wyznaczenie wartoœci œredniej za pomoc¹ funkcji signal_mean - mean()
-y_mean = [signal_mean(y1) signal_mean(y3) signal_mean(y3) signal_mean(y4)]
+y_mean = [signal_mean(y1) signal_mean(y3) ...
+    signal_mean(y3) signal_mean(y4)]
 % Energia sygnalu - za pomoc¹ funkcji signal_energy()
-e = [signal_energy(y1) signal_energy(y2) signal_energy(y3) signal_energy(y4)]
+e = [signal_energy(y1) signal_energy(y2) ...
+    signal_energy(y3) signal_energy(y4)]
 
 
 
