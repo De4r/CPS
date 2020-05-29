@@ -4,7 +4,8 @@
 % Dla filtra FIR sprawdzic jego dzia³anie.
 %                                   Mateusz Krupnik
 
-%%%%%%%%%%%%% CZESC 1.
+% CZESC 1: Wykreœlenie charakterystyk dla 4 zestawów wspó³czynnikow
+% transmitacji uk³adów (KODY 1-4 w Lab. 6)
 clc; clear all; close all;
 L=[0.0675 0.1349 0.0675; 0.0412 0.0824 0.0412;...
     0.0996 0.1297 0.0996; 0.1239 0.0662 0.1239]; % Licznik
@@ -55,15 +56,15 @@ t=0:(1/fs):1.023;                   % Wektor czasu
 % Sygna³ wymuszenia - sk³adowa 3 harmonicznych
 x=A1*sin(2*pi*f1*t)+A2*sin(2*pi*f2*t)+A3*sin(2*pi*f3*t);
 
-%% Filtr dolnoprzepustowy
+%% Filtr dolnoprzepustowy Butterwotha
 % Parametry
 fo1 = 300; fo2 = 200;           % Czestotliwosci ociecia
 wn1 = fo1*2/fs; wn2 = fo2*2/fs; % Znormalizowane czestotliwosci
 wn = [wn1, wn2]; fo = [fo1, fo2];
 % Filtr Butter - dolnoprzepustowy
-N = [2, 4 ,8];
+N = [2, 4 ,8]; rzad = 3;    % wybór rzêdu filtra
 for i=1:length(wn)
-    [l, m] = butter(N(1,3), wn(i));     % Rz¹d oraz czest. odciecia
+    [l, m] = butter(N(1,rzad), wn(i));     % Rz¹d oraz czest. odciecia
     y = filter(l, m, x);                % Odpowiedz filtra
     % Obliczenie transformaty Fouriera 
     [f_w, Moc, Wid] = fft_from_signal([x; y], fs);   % Funkcja z Lab 4 i 5
@@ -85,16 +86,16 @@ for i=1:length(wn)
     title('Moc widmowa odpowiedzi');
 end
 
-%% Filtr srodkowoprzepustowy
+%% Filtr srodkowoprzepustowy Butterwortha 
 % Parametry z poprzedniego filtru
-[l, m] = butter(N(1,3), fliplr(wn));    % Odwrócenie kolejnoœci cz. odc.
+[l, m] = butter(N(1,rzad), fliplr(wn));    % Odwrócenie kolejnoœci cz. odc.
 y = filter(l, m, x);                    % Odpowiedz filtra
 [f_w, Moc, Wid] = fft_from_signal([x; y], fs);   % Funkcja z Lab 4 i 5
 
 % Dzwiek
 sound(x); pause(t(end)); sound(y); pause(t(end));
 % Wykresy
-figure(19); sgtitle(['Filtr srodkowoprzepustowy f_o1=' num2str(fo(2)) ' f_o2=' num2str(fo(1))]);
+figure(19); sgtitle(['Filtr srodkowoprzepustowy f_{o1}=' num2str(fo(2)) ' f_{o2}=' num2str(fo(1))]);
 subplot(321); plot(t, x); xlabel('Czas [s]'); ylabel('Amplituda'); grid;
 title('Sygna³ wymuszaj¹cy');
 subplot(322); plot(t, y); xlabel('Czas [s]'); ylabel('Amplituda'); grid;
@@ -131,14 +132,14 @@ title('Moc widmowa wymuszenia');
 subplot(326); plot(f_w, Moc(2,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Moc widmowa odpowiedzi');
 
-%% Projekt filtra i jego dzialanie
+%% Projekt filtra cyfrowego i jego dzialanie
 % Parametry, niektóre z poprzednich filtrów
 format long e;  % Typ formatowania zmiennych, 16 miejsc, wykladniczo
 F_=[0 0.1 0.2 0.5 0.7 1];
 M_=[1 1 1 0 0 0];
-
-[l, m] = yulewalk(N(1,3), F_, M_);      % Metoda Yule-Walkera
-b = fir2(128, F_, M_); fir2(128, F_, M_);
+% Parametr rzêdu z poprzednich sekcji
+[l, m] = yulewalk(N(1,rzad), F_, M_);      % Metoda Yule-Walkera
+b = fir2(128, F_, M_); fir2(128, F_, M_);   % Metoda próbkowania w d. czest.
 
 
 [h, w] = freqz(b, 1); Mag = 20*log(abs(h)); Fi = phase(h)*180/pi; w = w/pi;

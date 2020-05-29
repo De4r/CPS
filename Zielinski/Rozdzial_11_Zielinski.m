@@ -9,7 +9,7 @@ astop = 60; % t³umienie w paœmie zaprowym
 fpr = 2000; % czestotliwoœæ probkowania
 fmx = 1000; % maks. sk³adowa czêstotliwoœci fpr/2
 
-%% Filtry Butterwortha Hp, BP i BS - filtry oparte na okreglu w lewej polpl.
+%% Filtry Butterwortha Hp, BP i BS - filtry oparte na okregu w lewej polpl.
 typ = "Butterworth ";
 for i=1:4
     % filtr dolnoprzepustowy LP
