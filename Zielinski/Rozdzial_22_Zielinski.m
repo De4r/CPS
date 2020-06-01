@@ -1,16 +1,19 @@
-% Rodzial 17 Zielniski
+% Rodzial 17 Zielinski
 %                       Mateusz Krupnik
-% Æwiczenie: Wykorzystanie transformacji 2D DFT i 2D DCT do filtracji obrazu
+% Æwiczenie: Wykorzystanie transformacji 2D DFT i 2D DCT do filtracji
+% obrazu
 clear all; close all; clc;
 % Inicjalizacja ? wczytaj obraz
-[x,cmap] = imread('cameraman.tif');     % wczytaj obraz do "x" i jego paletê kolorów do "cmap"
+[x,cmap] = imread('cameraman.tif');
+% wczytaj obraz do "x" i jego paletê kolorów do "cmap"
 imshow(x,cmap), title('Obraz');	% poka¿ obraz wykorzystuj¹c jego paletê
-[M, N] = size(x);       % odczytaj liczbê wierszy i kolumn; za³o¿enie M=N !!!
-x = im2double(x);           % zamieñ reprezentacjê pikseli
+[M, N] = size(x);	% odczytaj liczbê wierszy i kolumn; za³o¿enie M=N !!!
+x = im2double(x);	% zamieñ reprezentacjê pikseli
 
 % Macierz transformacji 1D DCT oraz 1D DFT
 n=0:N-1; % numery próbek funkcji bazowych
-c = [sqrt(1/N) sqrt(2/N)*ones(1,N-1)]; f = 1/sqrt(N); % wspó³czynniki normalizuj¹ce
+c = [sqrt(1/N) sqrt(2/N)*ones(1,N-1)];
+f = 1/sqrt(N); % wspó³czynniki normalizuj¹ce
 for k=0:N-1                 % wyznacz macierz transformacji
     C(k+1,n+1) = c(k+1) * cos( pi*k*(n+1/2) / N ); % funkcje bazowe 1D DCT
     F(k+1,n+1) = f * exp(j*2*pi/N*k*n); % funkcje bazowe 1D DFT
@@ -19,7 +22,7 @@ end
 % JEDNA LINIA - transformacja DFT i DCT wiersza
 Nr = 100; K = 2; y = x;	% numer linii, szerokoœæ znacznika, kopia obrazu
 linia = x(Nr,1:N);      % pobranie linii
-y(Nr-K:Nr+K,1:N) = 0*ones(2*K+1,N);	% zaznacz wybran¹ liniê czarnym kolorem
+y(Nr-K:Nr+K,1:N) = 0*ones(2*K+1,N);	% zaznacz wybran¹ liniê na czarno
 % poka¿ obraz z czarn¹ lini¹
 figure(2)
 subplot(221); imshow(y,cmap); title('Obraz');
@@ -42,31 +45,34 @@ X = conj(C) * x * conj(C).'; % 2D DCT ? NASZE (dla DCT conj(C)=C)
 Y = X .* H; % iloczyn widma DCT i maski
 % y = idct2(Y); % 2D IDCT ? MATLABA
 y = C.' * Y * C; % 2D IDCT ? NASZE
-XdB = skaladB( X ); YdB = skaladB( Y ); % wyskalowanie intensywnoœci pikseli w dB
+XdB = skaladB( X );
+YdB = skaladB( Y ); % wyskalowanie intensywnoœci pikseli w dB
 figure(3)
 subplot(221); imshow(x, cmap); title('Obraz'); % dalej tylko wizualizacja
 subplot(222); imshow(XdB, cmap); title('Widmo DCT');
 subplot(223); imshow(YdB, cmap); title('Widmo DCT + Maska');
 subplot(224); imshow(y(1:128,65:192), cmap); title('Fragment wyniku');
 
-% FILTRACJA 2D za pomoc¹ 2D DFT (fftshift2D - przestawianie æwiartek widma 2D DFT, patrz rys. 22.11a)
-% maska czêstotliwoœciowa H (MxN)
+% FILTRACJA 2D za pomoc¹ 2D DFT (fftshift2D - przestawianie æwiartek widma
+% 2D DFT, patrz rys. 22.11a) maska czêstotliwoœciowa H (MxN)
 K = 32; H = zeros(M,N);
 % œrodek = (M/2+1, N/2+1)
 H(M/2+1-K : M/2+1+K, N/2+1-K : N/2+1+K) = ones(2*K+1,2*K+1);
-h = fftshift2D( real( ifft2( fftshift2D(H) ) ) ); % odpowiedŸ impulsowa maski
+h = fftshift2D(real(ifft2(fftshift2D(H)))); % odpowiedŸ impulsowa maski
 figure(4)
-subplot(121); imshow(255*H,cmap); title('Maska Freq'); % rysunek maski
-subplot(122); mesh(h); title('OdpowiedŸ impulsowa'); % rysunek jej odp. impulsowej
+subplot(121);
+imshow(255*H,cmap); title('Maska Freq'); % rysunek maski
+subplot(122);
+mesh(h); title('OdpowiedŸ impulsowa'); % rysunek jej odp. impulsowej
 
 
 % X = fft2(x)/N; % transformacja Fouriera 2D DFT ? MATLABA
 X = conj(F) * x * conj(F).';	% transformacja Fouriera 2D DFT ? NASZA
 Xp = fftshift2D(X);             % przestawienie miejscami æwiartek widma
 Yp = Xp .* H;               % filtracja = iloczyn widma 2D DFT i maski 2D
-Y = fftshift2D(Yp);         % powrotne przestawienie æwiartek widma
-% y1 = ifft2(Y)*N;          % odwrotna transformacja Fouriera 2D IDFT ? MATLABA
-y1 = F.' * Y * F;           % odwrotna transformacja Fouriera 2D IDFT ? NASZA
+Y = fftshift2D(Yp);     % powrotne przestawienie æwiartek widma
+% y1 = ifft2(Y)*N;  	% odwrotna transformacja Fouriera 2D IDFT MATLABA
+y1 = F.' * Y * F;    	% odwrotna transformacja Fouriera 2D IDFT NASZA
 y1 = real(y1);              % czêœæ rzeczywista, urojona równa zeru
 y1f = y1(1:128,65:192);     % wybranie fragmentu obrazu do wizualizacji
 
@@ -133,7 +139,9 @@ w = hamming(L); w = w * w'; % okno 2D
 figure(9);
 subplot(111); mesh(m,n,w); colormap([0 0 0]); title('2D Okno');
 for chka=0:1
-    if(chka==0) % Charakterystyka prostok¹tna - odp. impulsowa dwóch filtrów LowPass
+    if(chka==0)
+        % Charakterystyka prostok¹tna - odp. impulsowa dwóch filtrów
+        % LowPass
         f0=0.25; wc=pi*f0;
         sinc=sin(wc*(-K:K))./(pi.*(-K:K));
         sinc(K+1)=f0; lp1=sinc'*sinc;
@@ -142,7 +150,8 @@ for chka=0:1
         sinc=sin(wc*(-K:K))./(pi.*(-K:K));
         sinc(K+1)=f0; lp2=sinc'*sinc;
         chkat = "prostokatna"
-    else % Charakterystyka ko³owa - odp. impulsowa dwóch filtrów LowPass
+    else
+        % Charakterystyka ko³owa - odp. impulsowa dwóch filtrów LowPass
         f0=0.25; wc=pi*f0;
         lp1=wc*besselj( 1,wc*sqrt(m.^2 + n.^2))./(2*pi*sqrt(m.^2+n.^2));
         lp1(K+1,K+1)= wc^2/(4*pi);
@@ -159,7 +168,8 @@ for chka=0:1
     bpw = bp .* w; % z oknem
     bs = - bp; bs(K+1,K+1) = 1 - bp(K+1,K+1); % BandStop bez okna 2D
     bsw = bs .* w; % z oknem
-    for typ = 1 : 4 % poka¿ odp. impulsow¹, jej widmo i przefiltrowany obraz
+    for typ = 1 : 4
+        % poka¿ odp. impulsow¹, jej widmo i przefiltrowany obraz
         switch (typ) % wybierz typ filtra
             case 1, h = lp; hw = lpw; filtr = "LowPass"; % LP
             case 2, h = hp; hw = hpw; filtr = "HighPass"; % HP
@@ -205,8 +215,8 @@ for k = N/2+1-Q : N/2+1+Q % ko³owa
     end
 end
 
-% H(N/2+1-Q : N/2+1+Q, N/2+1-Q : N/2+1+Q) = ones(2*Q+1,2*Q+1); % prostok¹tna
-% Zaprojektowanie filtra i sprawdzenie jego dzia³ania
+% H(N/2+1-Q : N/2+1+Q, N/2+1-Q : N/2+1+Q) = ones(2*Q+1,2*Q+1); %
+% prostok¹tna Zaprojektowanie filtra i sprawdzenie jego dzia³ania
 h = real( ifft2(fftshift2D(H)) ); h = fftshift2D(h); % odpowiedŸ impulsowa
 hw = h .* w; % odp. impulsowa z oknem
 Hw = abs( fftshift2D( fft2( hw ) ) ); % jej widmo

@@ -1,10 +1,10 @@
-% Rodzial 4 Zielniski
+% Rodzial 4 Zielinski
 %                       Mateusz Krupnik
-clear all; clf;
+clear all; close all;
 % Generowanie przebiegu
 fx = 1;     % czêstotliwoœæ sygna³u [Hz]
 fps = 100;  % stara czêstotliwoœæ próbkowania [Hz]
-N = 200;    % liczba próbek sygna³u spróbkowanego z czêstotliwoœci¹ fps (stara)
+N = 200;    % liczba próbek sygna³u spróbk. z czêstotliwoœci¹ fps (stara)
 K = 10;     % ile razy zmniejszyæ czêstotliwoœæ próbkowania
 
 % Generacja sygnalu
@@ -13,14 +13,16 @@ ts = 0:dts:(N-1)*dts;
 xs = sin(2*pi*fx*ts);   % sprobkowany
 % Generacja wykresu
 subplot(3,1,1)
-plot(ts, xs, 'r', ts, xs, 'o'); grid; title('Sygnal sprobkowany stara czest. probk.');
+plot(ts, xs, 'r', ts, xs, 'o');
+grid; title('Sygnal sprobkowany stara czest. probk.');
 
 fpn = fps/K;
-xn = xs(1:K:length(xs)); M = length(xn); % sprobkowany nowa czestotliwoscia
+xn = xs(1:K:length(xs)); M = length(xn); % sprobk. nowa czestotliwoscia
 dtn = K*dts; tn = 0:dtn:(M-1)*dtn;
 % Generacja wykresu
 subplot(3,1,2)
-plot(tn, xn, 'b', tn, xn, 'o'); grid; title('Sygnal sprobkowany nowa czest. probk.');hold on;
+plot(tn, xn, 'b', tn, xn, 'o');
+grid; title('Sygnal sprobkowany nowa czest. probk.');hold on;
 subplot(3,1,3)
 stem(xn, 'b');
 
@@ -47,13 +49,17 @@ for k=1:M
     y1 = xn(1, k)*fun_aproks1;  % probka*f.aprosk
     y = y + y1;                 % sumowanie
     % wykres
-    subplot(311); plot(ty, fun_aproks1); grid; hold on; title('Kolejna funkcja aproksymuj¹ca');
-    subplot(312); plot(ty,y1); grid; title('Kolejny sk³adnik sumy'); hold on;
+    subplot(311); plot(ty, fun_aproks1);
+    grid; hold on; title('Kolejna funkcja aproksymuj¹ca');
+    subplot(312); plot(ty,y1);
+    grid; title('Kolejny sk³adnik sumy'); hold on;
 end
 % Wykres caloœci
 subplot(313); plot(ty,y); grid; title('Suma skladowych');
 
 %% Wykres porownawczy
 figure()
-subplot(211); plot(ty, y, 'b'); grid; title('Sygnal odtworzony');
-subplot(212); plot(ty, xs(1:N)-y(1:N), 'b'); grid; title('Roznica miedzy syg. org. a odtw.');
+subplot(211); plot(ty, y, 'b');
+grid; title('Sygnal odtworzony');
+subplot(212); plot(ty, xs(1:N)-y(1:N), 'b');
+grid; title('Roznica miedzy syg. org. a odtw.');

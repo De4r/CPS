@@ -1,7 +1,7 @@
-% Rodzial 13 Zielniski
+% Rodzial 13 Zielinski
 %                       Mateusz Krupnik
 
-% Æwiczenie: Filtry adaptacyjne typu LMS (NLMS) ? losowego gradientu
+% Æwiczenie: Filtry adaptacyjne typu LMS (NLMS) losowego gradientu
 % Oznaczenia: x - syg filtrowany, d - sygnal odniesienia
 %             y - przefiltrowany adaptacyjnie sygnal x,
 %             e = d - y - sygnal bledu adaptacji
@@ -35,7 +35,8 @@ okno = ["Brak", "Gaussa", "Liniowe", "Wyk³adnicze"];
 
 for i=1:2
     if i==1
-        % KAsowanie interferencji sieci - sinusida 50Hz przesunieta w fazie
+%         KAsowanie interferencji sieci - sinusoida 50Hz przesunieta w
+%         fazie
         P = 0; % brak predykcji
         x = 0.1*sin(2*pi*50*t-pi/5); % sieæ przesuniêta w fazie
         d = s + 0.5*sin(2*pi*50*t); % sygna³ + sieæ
@@ -43,15 +44,19 @@ for i=1:2
         % Odszumianie sygnalu z szumu normlnaego
         P = 1; % rz¹d predykcji (do zmiany: 1,2,3,...)
         x = s + 0.25*randn(1,Nx); % sygna³ + szum
-        d = [ x(1+P:length(x)) zeros(1, P) ]; % odniesieniem sygna³ "przyspieszony" o P próbek
+        % odniesieniem sygna³ "przyspieszony" o P próbek
+        d = [ x(1+P:length(x)) zeros(1, P) ]; 
     end
-    tempp = " przyk³ad: " + num2str(i) + " Okno: " + okno(okno_) + " Alg: " + algo(alg);
+    tempp = " przyk³ad: " + num2str(i) + ...
+        " Okno: " + okno(okno_) + " Alg: " + algo(alg);
     figure();
     sgtitle("Sygna³y wejœciowe" + tempp);
     subplot(211); plot(t, x); grid;
-    title('Syg. wej.: x(t)'); xlabel('Czas [s]'); ylabel('Ampl.');
+    title('Syg. wej.: x(t)'); xlabel('Czas [s]');
+    ylabel('Ampl.');
     subplot(212); plot(t, d); grid;
-    title('Syg. wej.: d(t)=s(t)+x(t)'); xlabel('Czas [s]'); ylabel('Ampl.');
+    title('Syg. wej.: d(t)=s(t)+x(t)'); xlabel('Czas [s]');
+    ylabel('Ampl.');
     
     % Filtracja adaptacyjna, 4 wiersze dla 4 sygnalow
     bx = zeros(1, M);   % buffor wejsciowy x
@@ -85,7 +90,8 @@ for i=1:2
     end
     if (i==2)
         n=1:Nx-P;
-        subplot(111); plot(t(n),s(n),'r',t(n),y(n),'b'); grid; xlabel('czas [sek]');
+        subplot(111); plot(t(n),s(n),'r',t(n),y(n),'b');
+        grid; xlabel('czas [sek]');
     end
     title("Orgina³ (czerwony) i wynik filtracji (niebieski)" + tempp);
 end

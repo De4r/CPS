@@ -1,4 +1,4 @@
-% Rodzial 10 Zielniski
+% Rodzial 10 Zielinski
 %                       Mateusz Krupnik
 
 %% Filtracja cyfrowa z wykorzystaniem buforów
@@ -40,7 +40,7 @@ for i=1:2
    z = [ z conj(z)]; p = [ p conj(p)];  % dodanie par sprzê¿onych
    
    % Po³o¿eine zer i beignów
-   figure(6-*i - 5);
+   figure(6*i - 5);
    plot(s, c, '-k', real(z), imag(z), 'or', real(p), imag(p), 'xb');
    title(["Zera i biguny filtra: " + filtr ]); legend('Zera','Bieguny');
    grid on;
@@ -100,7 +100,8 @@ for i=1:2
     Y(3, :) = freqz(y3(n),1,wn)/(Nx/4);
     X = abs(X); Y = abs(Y);
     
-    figure(6*i-1); (["Filtracja sygna³u sinusoidalnego dla filtra: " + filtr]);
+    figure(6*i-1);
+    sgtitle(["Filtracja sygna³u sinusoidalnego dla filtra: " + filtr]);
     subplot(211); plot(f,X);
     title('Wejscie X(f)'); ylabel('Ampl.'); grid on;
     subplot(212); plot(f, Y(1, :), f, Y(2, :), f, Y(3, :));
@@ -114,20 +115,14 @@ for i=1:2
     Yd(2, :) = freqz(y2d(n),1,wn)/(Nx/4);
     Yd(3, :) = freqz(y3d(n),1,wn)/(Nx/4);
     Xd = abs(Xd); Yd = abs(Yd);
-    figure(6*i); (["Filtracja sygna³u impulsowego dla filtra: " + filtr]);
+    figure(6*i);
+    sgtitle(["Filtracja sygna³u impulsowego dla filtra: " + filtr]);
     subplot(211); plot(f, Xd);
     title('Wejscie X(f)'); ylabel('Ampl.'); grid on;
     subplot(212); plot(f, Yd(1, :), f, Yd(2, :), f, Yd(3, :));
     title('Wyjœcie Y(f)'); ylabel('Ampl.'); grid on;
     xlabel('f [Hz]'); legend('Matlab filter', 'filterBP', 'filterBK');
 end
-
-
-
-
-
-
-
 
 
 %%%%%%% DEFINICJE FUNKCJI %%%%%%%%%%%%%%%%%%

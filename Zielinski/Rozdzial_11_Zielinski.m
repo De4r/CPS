@@ -1,4 +1,4 @@
-% Rodzial 11 Zielniski
+% Rodzial 11 Zielinski
 %                       Mateusz Krupnik
 
 % Filtry cyfrowe na podstawie filtrów analogowych z rozdzia³u 6.
@@ -19,6 +19,7 @@ for i=1:4
         fpass = fc2fa(fpass, fpr);
         fstop = fc2fa(fstop, fpr);
         ws = fstop/fpass;   % czestotliwoœæ znorm. s=s'/w0, w0=2*pi*fpass
+    
     % filtr gornoprzepustowy HP
     elseif i==2
         filtr = "HighPass ";
@@ -27,6 +28,7 @@ for i=1:4
         fpass = fc2fa(fpass, fpr);
         fstop = fc2fa(fstop, fpr);
         ws = fpass/fstop; % transformacja czês.i: s=w0/s', w0=2*pi*fpass
+    
     % filtr srodkowoprzepustowy BP
     elseif i==3
         filtr = "BandPass ";
@@ -42,6 +44,7 @@ for i=1:4
         ws1t = (fs1^2 - fp1*fp2) / (fs1*(fp2-fp1));
         ws2t = (fs2^2 - fp1*fp2) / (fs2*(fp2-fp1));
         ws = min(abs(ws1t), abs(ws2t));
+    
     % filtr srodkowozaporowy BS
     else
         filtr = "BandStop ";
@@ -59,6 +62,7 @@ for i=1:4
         ws2t = (fs2*(fp2-fp1)) / (fs2^2 - fp1*fp2);
         ws = min(abs(ws1t), abs(ws2t));
     end
+    
     % Przeliczenie na wartoœæ bezwzglêdn¹
     wzm_p = 10^(-apass/20);
     wzm_s = 10^(-astop/20);
@@ -84,7 +88,8 @@ for i=1:4
     
     % Obliczenie parametrów N i w0 - funckja buttord
     wp = 1;
-    N = ceil(log10( (10^(astop/10)-1) /(10^(apass/10)-1) ) / (2*log10(ws/wp)) );
+    N = ceil(log10( (10^(astop/10)-1) / ...
+        (10^(apass/10)-1) ) / (2*log10(ws/wp)) );
     w0 = ws / (10^(astop/10)-1)^(1/(2*N));
 
     % Obliczenie biegunów trans. prototypu - funcja buttap i zp2tf
@@ -93,8 +98,8 @@ for i=1:4
     p = w0*exp(j*fi);                       % bieguny
     z = [];                                 % zera
     wzm = real( prod(-p) );                 % wzmocnienie
-    a = poly(p);                % bieguny --> wsp wielomianu mianownika A(z)
-    b = wzm;                    % wielomian licznika B(z)
+    a = poly(p);        % bieguny --> wsp wielomianu mianownika A(z)
+    b = wzm;        	% wielomian licznika B(z)
 %     z, p, b, a
     figure(7*i-6)
     plot( real(p), imag(p), 'x' ); grid;
@@ -106,21 +111,28 @@ for i=1:4
 	blad_N = N-NN; disp(['Blad rzedu: ' num2str(blad_N)]);
     
     % Oblicz charakterystykê czêstotliwoœciow¹ H(w)=B(w)/A(w)
-    w = 0 : 0.005 : 2;	% zakres pulsacji unormowanej; pulsacja granicy pasma przepustowego = 1
-    H = freqs(b,a,w);	% alternatywa: H = polyval( b,j*w)./polyval(a,j*w);
+    % zakres pulsacji unormowanej; pulsacja granicy pasma przepustowego = 1
+    w = 0 : 0.005 : 2;
+    H = freqs(b,a,w);	% alternatywa: H=polyval( b,j*w)./polyval(a,j*w);
     
     figure(7*i-5); subplot(211);
-    plot(w,abs(H)); grid; title(["Modu³ prototypu anaglowego LowPass dla" + filtr + typ]);
+    plot(w,abs(H)); grid;
+    title(["Modu³ prototypu anaglowego LowPass dla" + filtr + typ]);
     xlabel('Pulsacja [rad/sek]');
     subplot(212); plot(w,20*log10(abs(H))); grid;
     title(["Modu³ prototypu analogowego LowPass w dB dla " + filtr + typ]);
     xlabel('Pulsacja [rad/sek]'); ylabel('dB');
     
-    % Transformata czêstotliwoœci filtra analogowego: prototyp unormowany --> wynikowy filtr
-    if (i==1) [z,p,wzm] = lp2lpTZ(z,p,wzm,vp); end % LowPass to LowPass: s=s/w0
-    if (i==2) [z,p,wzm] = lp2hpTZ(z,p,wzm,vp); end % LowPass to HighPass: s=w0/s
-    if (i==3) [z,p,wzm] = lp2bpTZ(z,p,wzm,vc,dv); end % LowPass to BandPass: s=(s^2+wc^2)/(dw*s)
-    if (i==4) [z,p,wzm] = lp2bsTZ(z,p,wzm,vc,dv); end % LowPass to BandStop: s=(dw*s)/(s^2+wc^2)
+    % Transformata czêstotliwoœci filtra analogowego: prototyp unormowany
+    % --> wynikowy filtr
+    % LowPass to LowPass: s=s/w0
+    if (i==1) [z,p,wzm] = lp2lpTZ(z,p,wzm,vp); end
+    % LowPass to HighPass: s=w0/s
+    if (i==2) [z,p,wzm] = lp2hpTZ(z,p,wzm,vp); end
+    % LowPass to BandPass: s=(s^2+wc^2)/(dw*s)
+    if (i==3) [z,p,wzm] = lp2bpTZ(z,p,wzm,vc,dv); end
+    % LowPass to BandStop: s=(dw*s)/(s^2+wc^2)
+    if (i==4) [z,p,wzm] = lp2bsTZ(z,p,wzm,vc,dv); end
     b=wzm*poly(z); a=poly(p);
     
     % Poka¿ zera i bieguny po transformacji czêstoliwoœci
@@ -143,7 +155,8 @@ for i=1:4
     grid; title(["Modu³ dla filtra: " + filtr + typ]);
     xlabel('Czestotliwoœæ [Hz]');
     subplot(212);
-    plot(f,20*log10(abs(H)), f_ps, wzmdB_ps,'ro'); axis([fmin,fmax,-100,20]);
+    plot(f,20*log10(abs(H)), f_ps, wzmdB_ps,'ro');
+    axis([fmin,fmax,-100,20]);
     grid; title(["Modu³ w dB filtra " + filtr + typ]);
     xlabel('Czestotliwoœæ [Hz]'); ylabel('dB');
     plot(f,unwrap(angle(H))); grid; title('Faza');
@@ -204,6 +217,7 @@ for i=1:4
         fpass = fc2fa(fpass, fpr);
         fstop = fc2fa(fstop, fpr);
         ws = fstop/fpass;   % czestotliwoœæ znorm. s=s'/w0, w0=2*pi*fpass
+    
     % filtr gornoprzepustowy HP
     elseif i==2
         filtr = "HighPass ";
@@ -212,6 +226,7 @@ for i=1:4
         fpass = fc2fa(fpass, fpr);
         fstop = fc2fa(fstop, fpr);
         ws = fpass/fstop; % transformacja czês.i: s=w0/s', w0=2*pi*fpass
+   
     % filtr srodkowoprzepustowy BP
     elseif i==3
         filtr = "BandPass ";
@@ -227,6 +242,7 @@ for i=1:4
         ws1t = (fs1^2 - fp1*fp2) / (fs1*(fp2-fp1));
         ws2t = (fs2^2 - fp1*fp2) / (fs2*(fp2-fp1));
         ws = min(abs(ws1t), abs(ws2t));
+    
     % filtr srodkowozaporowy BS
     else
         filtr = "BandStop ";
@@ -244,6 +260,7 @@ for i=1:4
         ws2t = (fs2*(fp2-fp1)) / (fs2^2 - fp1*fp2);
         ws = min(abs(ws1t), abs(ws2t));
     end
+    
     % Przeliczenie na wartoœæ bezwzglêdn¹
     wzm_p = 10^(-apass/20);
     wzm_s = 10^(-astop/20);
@@ -269,7 +286,8 @@ for i=1:4
     
     % Obliczenie parametrów N i w0 
     wp = 1;
-    Nreal = acosh(sqrt((10^(astop/10)-1) / (10^(apass/10)-1))) / acosh(ws/wp);
+    Nreal = acosh(sqrt((10^(astop/10)-1) / ...
+        (10^(apass/10)-1))) / acosh(ws/wp);
     N = ceil(Nreal);
     epsi = sqrt(10^(apass/10)-1);
     D = asinh(1/epsi)/N; R1 = sinh(D); R2 = cosh(D);
@@ -282,8 +300,8 @@ for i=1:4
     p = real(p1) +1i*imag(p2);               % Polaczone bieguny
     z = [];                                 % zera
     wzm = prod(-p);                 % wzmocnienie
-    a = poly(p);                % bieguny --> wsp wielomianu mianownika A(z)
-    b = wzm;                    % wielomian licznika B(z)
+    a = poly(p);      	% bieguny --> wsp wielomianu mianownika A(z)
+    b = wzm;        	% wielomian licznika B(z)
     if (rem(N,2)==0) b = b*10^(-apass/20); end
     
     figure(7*i-6+28)
@@ -296,21 +314,28 @@ for i=1:4
 	blad_N = N-NN; disp(['Blad rzedu: ' num2str(blad_N)]);
     
     % Oblicz charakterystykê czêstotliwoœciow¹ H(w)=B(w)/A(w)
-    w = 0 : 0.005 : 2;	% zakres pulsacji unormowanej; pulsacja granicy pasma przepustowego = 1
-    H = freqs(b,a,w);	% alternatywa: H = polyval( b,j*w)./polyval(a,j*w);
+    % zakres pulsacji unormowanej; pulsacja granicy pasma przepustowego = 1
+    w = 0 : 0.005 : 2;
+    H = freqs(b,a,w);	% alternatywa: H=polyval( b,j*w)./polyval(a,j*w);
     
     figure(7*i-5+28); subplot(211);
-    plot(w,abs(H)); grid; title(["Modu³ prototypu anaglowego LowPass dla" + filtr + typ]);
+    plot(w,abs(H)); grid;
+    title(["Modu³ prototypu anaglowego LowPass dla" + filtr + typ]);
     xlabel('Pulsacja [rad/sek]');
     subplot(212); plot(w,20*log10(abs(H))); grid;
     title(["Modu³ prototypu analogowego LowPass w dB dla " + filtr + typ]);
     xlabel('Pulsacja [rad/sek]'); ylabel('dB');
     
-    % Transformata czêstotliwoœci filtra analogowego: prototyp unormowany --> wynikowy filtr
-    if (i==1) [z,p,wzm] = lp2lpTZ(z,p,wzm,vp); end % LowPass to LowPass: s=s/w0
-    if (i==2) [z,p,wzm] = lp2hpTZ(z,p,wzm,vp); end % LowPass to HighPass: s=w0/s
-    if (i==3) [z,p,wzm] = lp2bpTZ(z,p,wzm,vc,dv); end % LowPass to BandPass: s=(s^2+wc^2)/(dw*s)
-    if (i==4) [z,p,wzm] = lp2bsTZ(z,p,wzm,vc,dv); end % LowPass to BandStop: s=(dw*s)/(s^2+wc^2)
+    % Transformata czêstotliwoœci filtra analogowego: prototyp unormowany
+    % --> wynikowy filtr
+    % LowPass to LowPass: s=s/w0
+    if (i==1) [z,p,wzm] = lp2lpTZ(z,p,wzm,vp); end
+    % LowPass to HighPass: s=w0/s
+    if (i==2) [z,p,wzm] = lp2hpTZ(z,p,wzm,vp); end
+    % LowPass to BandPass: s=(s^2+wc^2)/(dw*s)
+    if (i==3) [z,p,wzm] = lp2bpTZ(z,p,wzm,vc,dv); end
+    % LowPass to BandStop: s=(dw*s)/(s^2+wc^2)
+    if (i==4) [z,p,wzm] = lp2bsTZ(z,p,wzm,vc,dv); end
     b=wzm*poly(z); a=poly(p);
     
     % Poka¿ zera i bieguny po transformacji czêstoliwoœci
@@ -333,7 +358,8 @@ for i=1:4
     grid; title(["Modu³ dla filtra: " + filtr + typ]);
     xlabel('Czestotliwoœæ [Hz]');
     subplot(212);
-    plot(f,20*log10(abs(H)), f_ps, wzmdB_ps,'ro'); axis([fmin,fmax,-100,20]);
+    plot(f,20*log10(abs(H)), f_ps, wzmdB_ps,'ro');
+    axis([fmin,fmax,-100,20]);
     grid; title(["Modu³ w dB filtra " + filtr + typ]);
     xlabel('Czestotliwoœæ [Hz]'); ylabel('dB');
     plot(f,unwrap(angle(H))); grid; title('Faza');
@@ -470,12 +496,12 @@ for i=1:4
     fi = pi/2 + dfi0/2 + (0 : N-1)*dfi0;    % k¹ty biegunów
     p1 = R1 * exp(j*fi);                    % bieguny R1
     p2 = R2 * exp(j*fi);                    % bieguny R2
-    p = real(p1) +1i*imag(p2);               % Polaczone bieguny
-    z = 1i*sin(fi)                                 % zera
-    wzm = prod(-z) / prod(-p);                 % wzmocnienie
+    p = real(p1) +1i*imag(p2);          	% Polaczone bieguny
+    z = 1i*sin(fi)                          % zera
+    wzm = prod(-z) / prod(-p);              % wzmocnienie
     z = 1./z; p = 1./p;
-    a = poly(p);                % bieguny --> wsp wielomianu mianownika A(z)
-    b = wzm*poly(z);                    % wielomian licznika B(z)
+    a = poly(p);    	% bieguny --> wsp wielomianu mianownika A(z)
+    b = wzm*poly(z);	% wielomian licznika B(z)
 
     
     figure(7*i-6+56)
@@ -488,7 +514,8 @@ for i=1:4
 	blad_N = N-NN; disp(['Blad rzedu: ' num2str(blad_N)]);
     
     % Oblicz charakterystykê czêstotliwoœciow¹ H(w)=B(w)/A(w)
-    w = 0 : 0.005 : 2;	% zakres pulsacji unormowanej; pulsacja granicy pasma przepustowego = 1
+    % zakres pulsacji unormowanej; pulsacja granicy pasma przepustowego = 1
+    w = 0 : 0.005 : 2;
     H = freqs(b,a,w);	% alternatywa: H = polyval( b,j*w)./polyval(a,j*w);
     
     figure(7*i-5+56); subplot(211);
@@ -498,11 +525,15 @@ for i=1:4
     title(["Modu³ prototypu analogowego LowPass w dB dla " + filtr + typ]);
     xlabel('Pulsacja [rad/sek]'); ylabel('dB');
     
-    % Transformata czêstotliwoœci filtra analogowego: prototyp unormowany --> wynikowy filtr
-    if (i==1) [z,p,wzm] = lp2lpTZ(z,p,wzm,vp); end % LowPass to LowPass: s=s/w0
-    if (i==2) [z,p,wzm] = lp2hpTZ(z,p,wzm,vp); end % LowPass to HighPass: s=w0/s
-    if (i==3) [z,p,wzm] = lp2bpTZ(z,p,wzm,vc,dv); end % LowPass to BandPass: s=(s^2+wc^2)/(dw*s)
-    if (i==4) [z,p,wzm] = lp2bsTZ(z,p,wzm,vc,dv); end % LowPass to BandStop: s=(dw*s)/(s^2+wc^2)
+    % Transformata czêstotliwoœci filtra analogowego: prototyp unormowany
+    % --> wynikowy filtr LowPass to LowPass: s=s/w0
+    if (i==1) [z,p,wzm] = lp2lpTZ(z,p,wzm,vp); end
+    % LowPass to HighPass: s=w0/s
+    if (i==2) [z,p,wzm] = lp2hpTZ(z,p,wzm,vp); end
+    % LowPass to BandPass: s=(s^2+wc^2)/(dw*s)
+    if (i==3) [z,p,wzm] = lp2bpTZ(z,p,wzm,vc,dv); end
+    % LowPass to BandStop: s=(dw*s)/(s^2+wc^2)
+    if (i==4) [z,p,wzm] = lp2bsTZ(z,p,wzm,vc,dv); end
     b=wzm*poly(z); a=poly(p);
     
     % Poka¿ zera i bieguny po transformacji czêstoliwoœci
@@ -513,11 +544,11 @@ for i=1:4
 
     printsys(b,a,'s');
     % Koñcowa charakterystyka czêstoliwoœciowa
-    NF = 1000; % ile punktów
-    fmin = 0; % dolna czêstotliwoœæ
-    fmax = 5000; % górna czêstotliwoœæ
+    NF = 1000;      % ile punktów
+    fmin = 0;       % dolna czêstotliwoœæ
+    fmax = 5000;	% górna czêstotliwoœæ
     f = fmin : (fmax-fmin)/(NF-1) : fmax; % wszystkie czêstotliwoœci
-    w = 2*pi*f; % wszystkie pulasacje
+    w = 2*pi*f;     % wszystkie pulasacje
     H = freqs(b,a,w); % alternatywa: H = polyval( b,j*w)./polyval(a,j*w);
     
     figure(7*i-3+56); subplot(211);
@@ -525,7 +556,8 @@ for i=1:4
     grid; title(["Modu³ dla filtra: " + filtr + typ]);
     xlabel('Czestotliwoœæ [Hz]');
     subplot(212);
-    plot(f,20*log10(abs(H)), f_ps, wzmdB_ps,'ro'); axis([fmin,fmax,-100,20]);
+    plot(f,20*log10(abs(H)), f_ps, wzmdB_ps,'ro');
+    axis([fmin,fmax,-100,20]);
     grid; title(["Modu³ w dB filtra " + filtr + typ]);
     xlabel('Czestotliwoœæ [Hz]'); ylabel('dB');
     plot(f,unwrap(angle(H))); grid; title('Faza');

@@ -1,4 +1,4 @@
-% Rodzial 9 Zielniski
+% Rodzial 9 Zielinski
 %                       Mateusz Krupnik
 
 % Implementacj algorytmu RADIX-2
@@ -30,7 +30,8 @@ wid_1 = fft_1(syg);         % Olbiczenie FFT
 blad_real = abs(real(wid_1-wid_fft));
 blad_imag = abs(imag(wid_1-wid_fft));
 figure(1); subplot(311);
-plot(f, abs(wid_1), f, abs(wid_fft), 'r'); title('Widmo wynikowe i orginalne');
+plot(f, abs(wid_1), f, abs(wid_fft), 'r');
+title('Widmo wynikowe i orginalne');
 legend('FFT Wlasne', 'FFT Matlab');
 subplot(312); plot(blad_real); title('B³ad czêœci rzeczywsitej');
 subplot(313); plot(blad_imag); title('B³ad czêœci urojonej');
@@ -43,7 +44,8 @@ wid_2 = fft_1(syg);         % Olbiczenie FFT
 blad_real = abs(real(wid_2-wid_fft));
 blad_imag = abs(imag(wid_2-wid_fft));
 figure(2); subplot(311);
-plot(f, abs(wid_1), f, abs(wid_fft), 'r'); title('Widmo wynikowe i orginalne');
+plot(f, abs(wid_1), f, abs(wid_fft), 'r');
+title('Widmo wynikowe i orginalne');
 legend('FFT Wlasne', 'FFT Matlab');
 subplot(312); plot(blad_real); title('B³ad czêœci rzeczywsitej');
 subplot(313); plot(blad_imag); title('B³ad czêœci urojonej');
@@ -56,7 +58,8 @@ wid_3 = fft_2(syg);         % Olbiczenie FFT
 blad_real = abs(real(wid_3-wid_fft));
 blad_imag = abs(imag(wid_3-wid_fft));
 figure(3); subplot(311);
-plot(f, abs(wid_1), f, abs(wid_fft), 'r'); title('Widmo wynikowe i orginalne');
+plot(f, abs(wid_1), f, abs(wid_fft), 'r');
+title('Widmo wynikowe i orginalne');
 legend('FFT Wlasne', 'FFT Matlab');
 subplot(312); plot(blad_real); title('B³ad czêœci rzeczywsitej');
 subplot(313); plot(blad_imag); title('B³ad czêœci urojonej');
@@ -69,7 +72,8 @@ wid_4 = fft_2(syg);         % Olbiczenie FFT
 blad_real = abs(real(wid_4-wid_fft));
 blad_imag = abs(imag(wid_4-wid_fft));
 figure(4); subplot(311);
-plot(f, abs(wid_1), f, abs(wid_fft), 'r'); title('Widmo wynikowe i orginalne');
+plot(f, abs(wid_1), f, abs(wid_fft), 'r');
+title('Widmo wynikowe i orginalne');
 legend('FFT Wlasne', 'FFT Matlab');
 subplot(312); plot(blad_real); title('B³ad czêœci rzeczywsitej');
 subplot(313); plot(blad_imag); title('B³ad czêœci urojonej');
@@ -145,12 +149,13 @@ function x=fft_2(x)
     Ns = length(x);    % liczba próbek
     for e = 1 : log2(Ns) % KOLEJNE ETAPY
         L = 2^e;        % d³ugoœæ bloków DFT, przesuniêcie bloków
-        M = 2^(e-1);	% liczba motylków w bloku, szerokoœæ ka¿dego motylka
+        M = 2^(e-1);	% lba motylków w bloku, szerokoœæ ka¿dego motylka
         Wi = 1;         % startowa wartoœæ wsp. bazy w etapie     
         W = cos(2*pi/L)-1i*sin(2*pi/L);	% mno¿nik bazy Fouriera
         for m = 1 : M           % KOLEJNE MOTYLKI
             for g = m : L : Ns	% W KOLEJNYCH BLOKACH
-                d = g+M;        % g ? „górny”, d ? „dolny” indeks próbki motylka
+                % g „górny”, d „dolny” indeks próbki motylka
+                d = g+M;        
                 T2 = x(d)*Wi;	% „serce” FFT
                 x(d) = x(g)-T2;	% nowa dolna próbka: górna minus „serce”
                 x(g) = x(g)+T2;	% nowa górna próbka: górna plus „serce”

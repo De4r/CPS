@@ -1,4 +1,4 @@
-% Rodzial 5 Zielniski
+% Rodzial 5 Zielinski
 %                       Mateusz Krupnik
 
 % Projektowanie filtrÛw metoda zer i biegunow
@@ -16,7 +16,7 @@ show_results(z, p, WMAX, TMAX, "przyklad 1.");
 %% Przyk≥ad 2: znajdowanie zer i biegunÛw zadanej transmitancji
 b=[ 0.66667 0 1 ];              % wspÛ≥czynniki licznika transmitancji
 a=[ 4.0001 5.0081 3.1650 1 ];   % wspÛ≥czynniki mianownika transmitancji
-[z,p,wzm] = tf2zp(b,a);         % wspÛ≥czynniki wielomianÛw -> zera wielomianÛw
+[z,p,wzm] = tf2zp(b,a);         % wspÛ≥. wielomianÛw -> zera wielomianÛw
 z = z'; p = p';                 % wektor pionowy -> wektor poziomy
 WMAX=5; TMAX=25;                % max pulsacja, max czas obserwacji
 show_results(z, p, WMAX, TMAX, "przyklad 2.");
@@ -60,14 +60,16 @@ function show_results(z, p, WMAX, TMAX, title_text)
     title('Ch-ka fazowa'); xlabel('CzestoúÊ w[rd/s]'); ylabel('[rd]');
     subplot(224);
     plot(w,Hfu,'k'); grid;
-    title('Ch-ka fazowa unwrap'); xlabel('CzestoúÊ w[rd/s]'); ylabel('[rd]');
+    title('Ch-ka fazowa unwrap');
+    xlabel('CzestoúÊ w[rd/s]'); ylabel('[rd]');
 
     % Odpowiedü impulsowa
     h = impulse(b,a,TMAX); % funkcja z przybornika CONTROL
     dt = TMAX/(length(h)-1); th = 0 : dt : TMAX;
     figure(); sgtitle(['Charakterystyki czasowe dla: ' title_text]);
     subplot(211);
-    plot(th,h,'k'); grid; title('Odpowiedü impulsowa'); xlabel('Czas t[s]');
+    plot(th,h,'k');
+    grid; title('Odpowiedü impulsowa'); xlabel('Czas t[s]');
     % Odpowiedü na skok jednostkowy
     u = step(b,a,TMAX); % funkcja z przybornika CONTROL
     dt = TMAX/(length(u)-1); tu = 0 : dt : TMAX;

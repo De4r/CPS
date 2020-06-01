@@ -1,6 +1,6 @@
-% Rozdzia 3 Zielniski - przykady 
+% Rozdzia 3 Zielinski - przykady 
 %                   Mateusz Krupnik
-clear all; clf;
+clear all; close all; clc;
 
 % Parametry programu 
 T = 1;              % okres [s]
@@ -23,24 +23,31 @@ figure("Name", "Sygnaly");
 sgtitle("Sygnaly")
 for i=1:size(x, 1)
     subplot(size(x, 1)/2, floor(size(x, 1)/2), i);
-    plot(t, x(i,:)); title(['Sygnal ' num2str(i)]); grid; xlabel('Czas [s]'); ylabel('Ampl.');
+    plot(t, x(i,:)); title(['Sygnal ' num2str(i)]);
+    grid; xlabel('Czas [s]'); ylabel('Ampl.');
 end
 hold on;
 
 %% Wyznaczaenie wspolczynnikow rozwiniecia sygnalu w szereg Fouriera
 figure("Name", "Wspolczynniki szeregu Fouriera");
 sgtitle("Wspolczynniki szeregu Fouriera");
-a = zeros(size(x, 1), NF); b=a; c0 = zeros(1, size(x, 1)); % prealokacja pamieci
+% prealokacja pamieci
+a = zeros(size(x, 1), NF); b=a; c0 = zeros(1, size(x, 1));
 for i=1:size(x, 1)
     for k=0:NF-1
-        ck=cos(2*pi*k*f0*t); sk=sin(2*pi*k*f0*t);   % cosinus oraz sinuns o nr k
+        ck=cos(2*pi*k*f0*t); sk=sin(2*pi*k*f0*t);   
+        % cosinus oraz sinuns o nr k
         a(i, k+1)=sum(x(i,:).*ck)/N;                % wspol a
         b(i, k+1)=sum(x(i,:).*sk)/N;                % wspol b
     end
     a(i, 1) = a(i, 1)/2;
     %Generowanie wykresow dla sygnalow
-    subplot(size(x, 1), 2, 2*i-1); stem(f,a(i,:),'filled'); xlabel('[Hz]'); title(['Syg. ' num2str(i) ': COS']);
-    subplot(size(x, 1), 2, 2*i); stem(f,b(i,:),'filled'); xlabel('[Hz]'); title(['Syg. ' num2str(i) ': SIN']);
+    subplot(size(x, 1), 2, 2*i-1);
+    stem(f,a(i,:),'filled'); xlabel('[Hz]');
+    title(['Syg. ' num2str(i) ': COS']);
+    subplot(size(x, 1), 2, 2*i);
+    stem(f,b(i,:),'filled'); xlabel('[Hz]');
+    title(['Syg. ' num2str(i) ': SIN']);
 end
 
 %% Porownanie z FFT
@@ -50,8 +57,12 @@ for i=1:size(x,1)
     X = fft(x(i,:), N)/N;   % obliczenie wspolczynnikow
     X = conj(X);            % sprzê¿enie
     % Generowanie blêdow dla wspolczynnikow
-    subplot(size(x, 1), 2, 2*i-1); plot(f, a(i,:) - real(X(1:NF) )); xlabel('[Hz]'); title(['Syg. ' num2str(i) ': DFT-SIN']);
-    subplot(size(x, 1), 2, 2*i); plot(f, b(i,:) - imag( X(1:NF) )); xlabel('[Hz]'); title(['Syg. ' num2str(i) ':DFT-COS']);
+    subplot(size(x, 1), 2, 2*i-1);
+    plot(f, a(i,:) - real(X(1:NF) ));
+    xlabel('[Hz]'); title(['Syg. ' num2str(i) ': DFT-SIN']);
+    subplot(size(x, 1), 2, 2*i);
+    plot(f, b(i,:) - imag( X(1:NF) ));
+    xlabel('[Hz]'); title(['Syg. ' num2str(i) ':DFT-COS']);
 end
 
 %% Synteza sygnalow z wspolczynnikow
@@ -61,11 +72,15 @@ for i=1:size(x, 1)
     y=zeros(size(t)); y_temp=y; % prealokacja
     for k=0:NF-1
         % generowanie sygnalow dla kolejnych wspolczynnikow
-        y_temp = 2*a(i, k+1)*cos(2*pi*k*f0*t) + 2*b(i, k+1)*sin(2*pi*k*f0*t);
+        y_temp = 2*a(i, k+1)*cos(2*pi*k*f0*t) + ...
+            2*b(i, k+1)*sin(2*pi*k*f0*t);
         y = y + y_temp;
         subplot(size(x, 1), 2, 2*i-1); plot(t ,y_temp); hold on;
     end
     % Wykres syntezy
-    subplot(size(x, 1), 2, 2*i-1); plot(t ,y, '--'); title(['Syg. ' num2str(i) ' skladowe']);
-    subplot(size(x, 1), 2, 2*i); plot(t, x(i, :), t, y, '--'); xlabel('Czas [s]'); title(['Syg. ' num2str(i)]);
+    subplot(size(x, 1), 2, 2*i-1);
+    plot(t ,y, '--'); title(['Syg. ' num2str(i) ' skladowe']);
+    subplot(size(x, 1), 2, 2*i);
+    plot(t, x(i, :), t, y, '--');
+    xlabel('Czas [s]'); title(['Syg. ' num2str(i)]);
 end

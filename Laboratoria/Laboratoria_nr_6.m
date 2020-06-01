@@ -18,23 +18,29 @@ for i=1:size(L,1)
     l = (L(i, :)); m = (M(i, :));
     sys=tf(l, m) % Transfer Function
     % Wykresy systemu
-    [h, w] = freqz(l, m);	% Char. ampl i fazowa
-    Mag = 10*log(abs(h));     % Amplituda w skali log
+    [h, w] = freqz(l, m, fs);	% Char. ampl i fazowa
+    Mag = 10*log(abs(h));   % Amplituda w skali log
     F = phase(h)*180/pi;	% Faza w stopiach
     w = w/pi;               % skalowanie
     figure(4*i-3)
     sgtitle(['Charakterystyki dla systemu nr: ' num2str(i)]);
     subplot(211); plot(w, Mag); 
-    ylabel('Amplituda [dB]'); xlabel('Czest. znorm.');
+    ylabel('Amplituda [dB]'); grid;
+    xlabel('Czestoœæ znormalizowa');
     subplot(212); plot(w, F); 
-    ylabel('Faza [\circ]'); xlabel('Czest. znorm.');
+    ylabel('Faza [\circ]'); grid;
+    xlabel('Czêstoœæ znormalizowa');
     figure(4*i-2)
-    dimpulse(l, m);         % impuls dla Z transmitacji
+    subplot(211);
+    dimpulse(l, m); grid;	% impuls dla Z transmitacji
+    subplot(212);
+    dstep(l, m); grid;      % odp skokowa
     
     y = filter(l, m, d_k);    % odpowiedz filtra o Z transmitacji na x
     figure(4*i-1)
-    plot(t,d_k, t, y);
-    title(['OdpowiedŸ dla systemu nr: ' num2str(i)]); xlabel('Czas [s]');
+    plot(t(1:50),d_k(1:50), t(1:50), y(1:50));
+    title(['OdpowiedŸ dla systemu nr: ' num2str(i)]);
+    xlabel('Czas [s]'); grid;
     ylabel('Amplituda'); legend('Wymuszenie', 'OdpowiedŸ');
     
     a=0; b=0; r=1; % 
@@ -71,42 +77,57 @@ for i=1:length(wn)
     % Dzwiek
     sound(x); pause(t(end)); sound(y); pause(t(end));
     % Wykresy
-    figure(16+i); sgtitle(['Filtr dolnoprzepustowy f_o=' num2str(fo(i))]);
-    subplot(321); plot(t, x); xlabel('Czas [s]'); ylabel('Amplituda'); grid;
+    figure(16+i);
+    sgtitle(['Filtr dolnoprzepustowy f_o=' num2str(fo(i))]);
+    subplot(321); plot(t, x);
+    xlabel('Czas [s]'); ylabel('Amplituda'); grid;
     title('Sygna³ wymuszaj¹cy');
-    subplot(322); plot(t, y); xlabel('Czas [s]'); ylabel('Amplituda'); grid;
+    subplot(322); plot(t, y);
+    xlabel('Czas [s]'); ylabel('Amplituda'); grid;
     title('Sygna³ po filtracji');
-    subplot(323); plot(f_w, Wid(1,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+    subplot(323); plot(f_w, Wid(1,:));
+    xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
     title('Widmo wymuszenia');
-    subplot(324); plot(f_w, Wid(2,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+    subplot(324); plot(f_w, Wid(2,:));
+    xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
     title('Widmo odpowiedzi');
-    subplot(325); plot(f_w, Moc(1,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+    subplot(325); plot(f_w, Moc(1,:));
+    xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
     title('Moc widmowa wymuszenia');
-    subplot(326); plot(f_w, Moc(2,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+    subplot(326); plot(f_w, Moc(2,:));
+    xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
     title('Moc widmowa odpowiedzi');
 end
 
 %% Filtr srodkowoprzepustowy Butterwortha 
 % Parametry z poprzedniego filtru
-[l, m] = butter(N(1,rzad), fliplr(wn));    % Odwrócenie kolejnoœci cz. odc.
+[l, m] = butter(N(1,rzad), fliplr(wn)); % Odwrócenie kolejnoœci cz. odc.
 y = filter(l, m, x);                    % Odpowiedz filtra
 [f_w, Moc, Wid] = fft_from_signal([x; y], fs);   % Funkcja z Lab 4 i 5
 
 % Dzwiek
 sound(x); pause(t(end)); sound(y); pause(t(end));
 % Wykresy
-figure(19); sgtitle(['Filtr srodkowoprzepustowy f_{o1}=' num2str(fo(2)) ' f_{o2}=' num2str(fo(1))]);
-subplot(321); plot(t, x); xlabel('Czas [s]'); ylabel('Amplituda'); grid;
+figure(19);
+sgtitle(['Filtr srodkowoprzepustowy f_{o1}=' ...
+    num2str(fo(2)) ' f_{o2}=' num2str(fo(1))]);
+subplot(321); plot(t, x);
+xlabel('Czas [s]'); ylabel('Amplituda'); grid;
 title('Sygna³ wymuszaj¹cy');
-subplot(322); plot(t, y); xlabel('Czas [s]'); ylabel('Amplituda'); grid;
+subplot(322); plot(t, y);
+xlabel('Czas [s]'); ylabel('Amplituda'); grid;
 title('Sygna³ po filtracji');
-subplot(323); plot(f_w, Wid(1,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+subplot(323); plot(f_w, Wid(1,:));
+xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Widmo wymuszenia');
-subplot(324); plot(f_w, Wid(2,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+subplot(324); plot(f_w, Wid(2,:));
+xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Widmo odpowiedzi');
-subplot(325); plot(f_w, Moc(1,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+subplot(325); plot(f_w, Moc(1,:));
+xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Moc widmowa wymuszenia');
-subplot(326); plot(f_w, Moc(2,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+subplot(326); plot(f_w, Moc(2,:));
+xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Moc widmowa odpowiedzi');
 
 %% Filtr górnoprzepustowy
@@ -119,17 +140,23 @@ y = filter(l, m, x);                    % Odpowiedz filtra
 sound(x); pause(t(end)); sound(y); pause(t(end));
 % Wykresy
 figure(20); sgtitle(['Filtr górnoprzepustowy f_o1=' num2str(fo(1))]);
-subplot(321); plot(t, x); xlabel('Czas [s]'); ylabel('Amplituda'); grid;
+subplot(321); plot(t, x);
+xlabel('Czas [s]'); ylabel('Amplituda'); grid;
 title('Sygna³ wymuszaj¹cy');
-subplot(322); plot(t, y); xlabel('Czas [s]'); ylabel('Amplituda'); grid;
+subplot(322); plot(t, y);
+xlabel('Czas [s]'); ylabel('Amplituda'); grid;
 title('Sygna³ po filtracji');
-subplot(323); plot(f_w, Wid(1,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+subplot(323); plot(f_w, Wid(1,:));
+xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Widmo wymuszenia');
-subplot(324); plot(f_w, Wid(2,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+subplot(324); plot(f_w, Wid(2,:));
+xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Widmo odpowiedzi');
-subplot(325); plot(f_w, Moc(1,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+subplot(325); plot(f_w, Moc(1,:));
+xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Moc widmowa wymuszenia');
-subplot(326); plot(f_w, Moc(2,:)); xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
+subplot(326); plot(f_w, Moc(2,:));
+xlabel('Czestotliwoœæ [Hz]'); ylabel('Amplituda'); grid;
 title('Moc widmowa odpowiedzi');
 
 %% Projekt filtra cyfrowego i jego dzialanie
@@ -138,19 +165,24 @@ format long e;  % Typ formatowania zmiennych, 16 miejsc, wykladniczo
 F_=[0 0.1 0.2 0.5 0.7 1];
 M_=[1 1 1 0 0 0];
 % Parametr rzêdu z poprzednich sekcji
-[l, m] = yulewalk(N(1,rzad), F_, M_);      % Metoda Yule-Walkera
-b = fir2(128, F_, M_); fir2(128, F_, M_);   % Metoda próbkowania w d. czest.
+[l, m] = yulewalk(N(1,rzad), F_, M_);     % Metoda Yule-Walkera
+b = fir2(128, F_, M_); fir2(128, F_, M_); % Metoda próbkowania w d. czest.
 
 
-[h, w] = freqz(b, 1); Mag = 20*log(abs(h)); Fi = phase(h)*180/pi; w = w/pi;
-[h, w_] = freqz(l, m); Mag_ = 20*log(abs(h)); Fi_ = phase(h)*180/pi; w_ = w_/pi;
+[h, w] = freqz(b, 1);
+Mag = 20*log(abs(h)); Fi = phase(h)*180/pi; w = w/pi;
+[h, w_] = freqz(l, m);
+Mag_ = 20*log(abs(h)); Fi_ = phase(h)*180/pi; w_ = w_/pi;
+
 % Wykresy
 figure(21);
 sgtitle('Porownanie roznych metod projektowania');
-subplot(211); plot(w, Mag, w_, Mag_); legend('FIR2', 'Yule-Walker'); grid;
+subplot(211); plot(w, Mag, w_, Mag_);
+legend('FIR2', 'Yule-Walker'); grid;
 xlabel('Czest. znorm.'); ylabel('Amplituda [dB]');
 title('Charakterystyka amplitudowa');
-subplot(212); plot(w, Fi, w_, Fi_); legend('FIR2', 'Yule-Walker'); grid;
+subplot(212); plot(w, Fi, w_, Fi_);
+legend('FIR2', 'Yule-Walker'); grid;
 xlabel('Czest. znorm.'); ylabel('Faza [\circ]');
 title('Charakterystyka fazowa');
 

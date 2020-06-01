@@ -1,4 +1,4 @@
-% Rodzial 12 Zielniski
+% Rodzial 12 Zielinski
 %                       Mateusz Krupnik
 
 clc; close all; clear all;
@@ -61,8 +61,10 @@ for i=1:4
         Ho(k+1) = temp * ho';
     end
     figure(i);
-    if (i==1 | i==2) Ax = Ar; Hx=real(H); Hxo=real(Ho); end % dla filtra typu I i II
-    if (i==3 | i==4) Ax = Ai; Hx=imag(H); Hxo=imag(Ho); end % dla filtra typu III i IV
+    % dla filtra typu I i II
+    if (i==1 | i==2) Ax = Ar; Hx=real(H); Hxo=real(Ho); end
+    % dla filtra typu III i IV
+    if (i==3 | i==4) Ax = Ai; Hx=imag(H); Hxo=imag(Ho); end
     figure(2*i)
     sgtitle("Charakterystyki filtra typu " + typ);
     subplot(211);
@@ -78,8 +80,9 @@ end
 
 %% Æwiczenie: Projektowanie nierekursywnych filtrów cyfrowych
 
-% Projektowanie filtrów FIR metod¹ WA¯ONEJ minimalizacji b³êdu œredniokwadratowego
-% pomiêdzy zadan¹ charakterystyk¹, spróbkowan¹ w dziedzinie czêstotliwoœci, a charakterystyk¹ otrzymywan¹
+% Projektowanie filtrów FIR metod¹ WA¯ONEJ minimalizacji b³êdu
+% œredniokwadratowego pomiêdzy zadan¹ charakterystyk¹, spróbkowan¹ w
+% dziedzinie czêstotliwoœci, a charakterystyk¹ otrzymywan¹
 
 % Wymagania dla filtra cyfrowego
 M = 20; % po³owa d³ugoœci filtra N = 2*M + 1
@@ -110,16 +113,19 @@ h = [ h; h(M:-1:1) ];
 n = 0:2*M;
 figure(57);
 stem(n, h); grid on;
-title('Odpowiedz impulsowa filtra'); xlabel('Probki n'); ylabel('Ampl.');
+title('Odpowiedz impulsowa filtra');
+xlabel('Probki n'); ylabel('Ampl.');
 NF = 500; wn = 0:pi/(NF-1):pi; fn = wn/(2*pi);
 H = freqz(h, 1, wn);
 figure(58);
-sgtitle('Charakterystyka filtra cyfrowego metod¹ wa¿onej minimalizacji b³edu');
+sgtitle('Char. filtra cyfrowego metod¹ wa¿onej minimalizacji b³edu');
 subplot(311); plot(fn, abs(H)); grid; title('Modu³ odpowiedzi czest.');
 xlabel('Czestotliwosc znorm. [Hz]'); ylabel('Ampl.');
-subplot(312); plot(fn, 180/pi*unwrap(angle(H))); grid; title('Faza odpowiedzi czest.');
+subplot(312); plot(fn, 180/pi*unwrap(angle(H)));
+grid; title('Faza odpowiedzi czest.');
 xlabel('Czestotliwosc znorm. [Hz]'); ylabel('deg.');
-subplot(313); plot(fn, 20*log10(abs(H))); grid; title('Modul odpowiedzi czest.');
+subplot(313); plot(fn, 20*log10(abs(H)));
+grid; title('Modul odpowiedzi czest.');
 xlabel('Czestotliwosc znorm. [Hz]'); ylabel('Ampl. [dB]');
 
 %% Æwiczenie: Projektowanie nierekursywnych filtrów cyfrowych w
@@ -223,15 +229,16 @@ while(sigmaMAX-sigma > tol)
     feMAX = fz(i_maximum);
     subplot(212);
     plot(fz(i_maximum),Herr(i_maximum),'or',fz,Herr,'b');
-    grid; title('B³¹d charakterystyki i M+1 najwiêkszych ekstremów'); pause(5);
+    grid; title('B³¹d charakterystyki i M+1 najwiêkszych ekstremów');
+    pause(5);
     
 end
 
 fz = fz/2;
 figure(61);
 subplot(211); stem(g); title('Wynikowa odp impulsowa filtra');
-subplot(212); plot(fz(i_maximum),Herr(i_maximum),'or',fz,Herr,'b'); grid;
-title('B³¹d H(f) + jego EKSTREMA');
+subplot(212); plot(fz(i_maximum),Herr(i_maximum),'or',fz,Herr,'b');
+grid; title('B³¹d H(f) + jego EKSTREMA');
 figure(62);
 subplot(211);
 plot(fz,Hd,'r',fz,H,'b'); grid; title('Wynikowe H(f)');
@@ -286,13 +293,17 @@ plot(fz,20*log10(H),'b'); grid; title('Wynikowe H(f) w dB');
     title(["Okno czas. Kaisera M=" + num2str(M) " Filtr: " + typ(i)]);
     
     % Tworzenie odp. impulsowej, wzory z tabelki
-    if (i==1) h=2*fc*sin(wc*m)./(wc*m); h=[ fliplr(h) 2*fc h]; end % filtr LP
-    if (i==2) h=-2*fc*sin(wc*m)./(wc*m); h=[ fliplr(h) 1-2*fc h]; end % filtr HP
-    if (i==3) % filtr BP
+    % filtr LP
+    if (i==1) h=2*fc*sin(wc*m)./(wc*m); h=[ fliplr(h) 2*fc h]; end
+    % filtr HP
+    if (i==2) h=-2*fc*sin(wc*m)./(wc*m); h=[ fliplr(h) 1-2*fc h]; end
+    % filtr BP
+    if (i==3) 
         h = 2*f2*sin(w2*m)./(w2*m) - 2*f1*sin(w1*m)./(w1*m);
         h = [ fliplr(h) 2*(f2-f1) h];
     end
-    if (i==4) % filtr BS
+    % filtr BS
+    if (i==4) 
         h = 2*f1*sin(w1*m)./(w1*m) - 2*f2*sin(w2*m)./(w2*m);
         h = [ fliplr(h) 1+2*(f1-f2) h];
     end
@@ -305,7 +316,7 @@ plot(fz,20*log10(H),'b'); grid; title('Wynikowe H(f) w dB');
     title(["Iloczyn okna i odp. impulsowej filtra: " + typ(i)]);
     
     % Charakterystyka czestotliwosciowa
-    NF = 1000; fmin = 0; fmax = fpr/2;      % wartoœci parametrów charakterystyki
+    NF = 1000; fmin = 0; fmax = fpr/2;	% wartoœci parametrów char.
     f = fmin : (fmax-fmin)/(NF-1) : fmax;	% czêstotliwoœæ
     w = 2*pi*f/fpr;                         % pulsacja
     HW = freqz(hw,1,w);
@@ -320,7 +331,8 @@ plot(fz,20*log10(H),'b'); grid; title('Wynikowe H(f) w dB');
 
  end
 
- %% Algorytm interpolacji sygna³u za pomoc¹ dyskretnej transformacji Fouriera DFT (FFT)
+ %% Algorytm interpolacji sygna³u za pomoc¹ dyskretnej transformacji
+ % Fouriera DFT (FFT)
  M=24; N=16; n=0:N-1; x=sin(2*pi/8*n);
  X = fft(x);    % obliczenie fft sygnalu rzeczywistego
  % Wstawienie do widma w srodku symetrii zer, skrajnie zer obliczyæ
@@ -329,7 +341,7 @@ plot(fz,20*log10(H),'b'); grid; title('Wynikowe H(f) w dB');
  y = M/N*real(ifft(X));
  figure(72); sgtitle('Filtr interpolujacy');
  subplot(211); stem(x); title('Orginalny'); 	% sygna³ wejœciowy
- subplot(212); stem(y); title('Interpolowany'); % interpolowany sygna³ wejœciowy
+ subplot(212); stem(y); title('Interpolowany'); % interpol. sygna³ wej.
 
  %% Æwiczenie: Projektowanie specjalnych filtrów cyfrowych metod¹ okien
  % Parametry
@@ -380,9 +392,11 @@ plot(fz,20*log10(H),'b'); grid; title('Wynikowe H(f) w dB');
        % Sygna³ testowy
        Nx=200; fx=50; fpr=1000; n=0:Nx-1; x=cos(2*pi*fx/fpr*n);
        y = conv(x, hw); % filtracja sygna³u odpowiedzi¹
-       % odciêcie stanów przejœciowych (po N?1 próbek) z przodu i z ty³u sygna³u yz(n)
+       % odciêcie stanów przejœciowych (po N?1 próbek) z przodu i z ty³u
+       % sygna³u yz(n)
        yp = y(N:Nx);
-       % odciêcie tych próbek w xz(n), dla których nie ma poprawnych odpowiedników w yz(n)
+       % odciêcie tych próbek w xz(n), dla których nie ma poprawnych
+       % odpowiedników w yz(n)
        xp = x(M+1:Nx-M);
        if (i==1)
            z = xp + 1i*yp;  % sygnal analityczny
@@ -403,17 +417,21 @@ plot(fz,20*log10(H),'b'); grid; title('Wynikowe H(f) w dB');
     if (i==3)
          % generacja sygna³u testowego x(n)
         Nx=50; fx=50; fpr=1000; n=0:Nx-1; x=cos(2*pi*fx/fpr*n);
-        xz=[]; KNx=K*Nx; xz=zeros(1,KNx); xz(1:K:KNx)=x(1:Nx); % dodanie zer
-        % filtracja xz(n) za pomoc¹ odp. impulsowej hw(n); otrzymujemy Nx+N?1 próbek
+        xz=[]; KNx=K*Nx; xz=zeros(1,KNx);
+        xz(1:K:KNx)=x(1:Nx); % dodanie zer
+        % filtracja xz(n) za pomoc¹ odp. impulsowej hw(n); otrzymujemy
+        % Nx+N?1 próbek
         yz=conv(xz,hw);
-        % odciêcie stanów przejœciowych (po N?1 próbek) z przodu i z ty³u sygna³u yz(n)
+        % odciêcie stanów przejœciowych (po N?1 próbek) z przodu i z ty³u
+        % sygna³u yz(n)
         yp=yz(N:KNx);
-        % odciêcie tych próbek w xz(n), dla których nie ma poprawnych odpowiedników w yz(n)
+        % odciêcie tych próbek w xz(n), dla których nie ma poprawnych
+        % odpowiedników w yz(n)
         xp=xz(M+1:KNx-M);
         Ny=length(yp); k=1:Ny;
         plot(k,xp(k),'or',k,yp(k),'-b');
-        title('Sygna³ filtrowany filtrem interpolujacym'); grid; % porównanie
+        title('Sygna³ filtrowany filtrem interpolujacym');
+        grid; % porównanie
     end
-
  end
  

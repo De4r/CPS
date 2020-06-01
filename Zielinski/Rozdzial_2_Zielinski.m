@@ -1,14 +1,15 @@
-% Zielniski 2.5 
+% Zielinski 2.5 
 % Przykad transofrmacji orogonalnych sygnalow
 %                           Mateusz Krupnik
 
 % Transformaty ortogonalne sygna³ów
-% 1) kszta³t dyskretnych baz: Fouriera, kosinusowej, sinusowej, Hadamarda, Walsha
-% 2) dopasowanie bazy ? przyk³adowa dekompozycja dwóch sygna³ów
-clear all; subplot(111);
-N=16; % wybór liczby (d³ugoœci) funkcji bazowych (wymiar przestrzeni wektorowej)
-n=0:N-1; % indeksy wszystkich próbek poszczególnych funkcji bazowych
-NN=2*N; % zmienna pomocnicza
+% 1) kszta³t dyskretnych baz: Fouriera, kosinusowej,
+% sinusowej, Hadamarda, Walsha
+% 2) dopasowanie bazy, przyk³adowa dekompozycja dwóch sygna³ów
+clear all; close all; clc; subplot(111);
+N=16;	% wybór liczby funkcji bazowych (wymiar przestrzeni wektorowej)
+n=0:N-1;	% indeksy wszystkich próbek poszczególnych funkcji bazowych
+NN=2*N;	% zmienna pomocnicza
 
 % Kszta³t funkcji bazowych dla transformacji kosinusowej i sinusowej
 % n-ta próbka k-tej funkcji bazowej
@@ -17,7 +18,9 @@ c = [sqrt(1/N) sqrt(2/N)*ones(1, N-1)];
 s = sqrt(2/(N+1));
 
 for k=0:N-1
-    baza_fouriera(k+1, n+1) = f * exp(2i*pi*k*n/N); % zamiast kolejnej petli for n:N-1 jest wektor razy skalar wpisny jak wiersz a kolejna baza jako kolejny wiesz
+    % zamiast kolejnej petli for n:N-1 jest wektor razy skalar wpisny jak
+    % wiersz a kolejna baza jako kolejny wiesz
+    baza_fouriera(k+1, n+1) = f * exp(2i*pi*k*n/N); 
     baza_cos(k+1, n+1) = c(k+1) * cos(k*pi*(n+1/2)/N);
     baza_sin(k+1, n+1) = s * sin(pi*(k+1)*(n+1) / (N+1));
     
@@ -61,15 +64,21 @@ for k = 1:N-1
 end
 n=0:N-1;
 figure()
-subplot(2,1,1); plot(n, imag(baza_fouriera(:,:))); grid; title('IMAG fourier');
-subplot(2,1,2); plot(n, real(baza_fouriera(:,:))); grid; title('REAL fourier');
+subplot(2,1,1);
+plot(n, imag(baza_fouriera(:,:))); grid; title('IMAG fourier');
+subplot(2,1,2);
+plot(n, real(baza_fouriera(:,:))); grid; title('REAL fourier');
 
 figure()
-subplot(2,1,1); plot(n, real(baza_sin(:,:))); grid; title('baza sinusowa');
-subplot(2,1,2); plot(n, real(baza_cos(:,:))); grid; title('baza cosinusowa');
+subplot(2,1,1);
+plot(n, real(baza_sin(:,:))); grid; title('baza sinusowa');
+subplot(2,1,2);
+plot(n, real(baza_cos(:,:))); grid; title('baza cosinusowa');
 figure()
-subplot(2,1,1); plot(n, real(baza_HR(:,:)),'--'); grid; title('baza HR');
-subplot(2,1,2); plot(n, real(baza_HD(:,:)),'-.'); grid; title('baza HD');
+subplot(2,1,1);
+plot(n, real(baza_HR(:,:)),'--'); grid; title('baza HR');
+subplot(2,1,2);
+plot(n, real(baza_HD(:,:)),'-.'); grid; title('baza HD');
 % Sprawdzenie ortonormalnoœci wybranych funkcji bazowych
 for k=1:N % zbudowanie macierzy transformacji
     Tf(k,1:N) = baza_fouriera(k,1:N); % transformacja Fouriera
@@ -100,16 +109,20 @@ a = T * x'; % analiza w zapisie macierzowym
 y = T' * a; % synteza w zapisie macierzowym
 y = y'; % zamieñ wektor pionowy na poziomy
 figure()
-stem(n,x,'filled','-k'); axis tight; title('sygna³ analizowany x(l)');
+stem(n,x,'filled','-k');
+axis tight; title('sygna³ analizowany x(l)');
 xlabel('numer próbki');
 figure()
-stem(n,real(a),'filled','-k'); axis tight; title('wsp dekomopozycji alfa(k)');
+stem(n,real(a),'filled','-k');
+axis tight; title('wsp dekomopozycji alfa(k)');
 xlabel('numer próbki');
 figure()
-stem(n,y,'filled','-k'); axis tight; title('sygna³ zsyntezowany x(l)');
+stem(n,y,'filled','-k');
+axis tight; title('sygna³ zsyntezowany x(l)');
 xlabel('numer próbki');
 figure()
-stem(n,y-x,'filled','-k'); axis tight; title('b³¹d syntezy 1: y(l)-x(l)');
+stem(n,y-x,'filled','-k');
+axis tight; title('b³¹d syntezy 1: y(l)-x(l)');
 xlabel('numer próbki');
 
 % Analiza i synteza w zapisie niemacierzowym
@@ -121,5 +134,6 @@ for k = 0 : N-1 % SYNTEZA: odtwórz sygna³
     y = y + a(k+1) * T(k+1,1:N); %
 end %
 figure()
-stem(n,y-x,'filled','-k'); axis tight; title('b³¹d syntezy 2: y(l)-x(l)');
+stem(n,y-x,'filled','-k');
+axis tight; title('b³¹d syntezy 2: y(l)-x(l)');
 xlabel('numer próbki');

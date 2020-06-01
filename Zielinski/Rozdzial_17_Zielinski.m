@@ -1,4 +1,4 @@
-% Rodzial 17 Zielniski
+% Rodzial 17 Zielinski
 %                       Mateusz Krupnik
 
 % Æwiczenie: Czasowo-czêsotliwoœciowa reprezentacja Gabora
@@ -29,8 +29,10 @@ dw = pinv(H)*mi; dw=dw';
 
 figure(1)
 sgtitle(['Czasowo-czêsotliwoœciowa reprezentacja Gabora']);
-subplot(211); plot(real(w)); title('Okno czasowe Blackmana z zerami'); grid;
-subplot(212); plot(real(dw)); title('Okno dualne do powy¿szego'); grid;
+subplot(211); plot(real(w)); title('Okno czasowe Blackmana z zerami');
+grid;
+subplot(212); plot(real(dw)); title('Okno dualne do powy¿szego');
+grid;
 
 % Generacja sygna³u zmiennego w czestotliwosci z czasem
 % Parametry
@@ -48,7 +50,8 @@ for k=0:2*L/dM-1
 end
 figure(2)
 sgtitle(['Czasowo-czêsotliwoœciowa reprezentacja Gabora']);
-subplot(2,2,[1, 2]); plot(t, x); title('Sygna³ wejœciowy'); xlabel('Czas [s]');
+subplot(2,2,[1, 2]); plot(t, x); title('Sygna³ wejœciowy');
+xlabel('Czas [s]');
 subplot(223); mesh( abs(tf')); title('Wykres 3D'); grid;
 subplot(224); contour( abs(tf')); title('Kontur'); grid;
 
@@ -114,14 +117,15 @@ xlabel('Czas [s]'); ylabel('Czêstotliwoœæ [Hz]');
 clear all;
 niter = 10; % liczba iteracji
 c = 0; d = 1;      % {c=1, d=0} ? funkcja skaluj¹ca, {c=0, d=1} ? falka
-% definicja wspó³czynników filtrów h0 i h1 systemu falkowego Db4 (17.62) (17.57)
+% definicja wspó³czynników filtrów h0 i h1 systemu falkowego Db4 (17.62)
+% (17.57)
 h0 = [ (1+sqrt(3))/(4*sqrt(2)) (3+sqrt(3))/(4*sqrt(2)) ...
     (3-sqrt(3))/(4*sqrt(2)) (1-sqrt(3))/(4*sqrt(2)) ];
 N = length(h0); n = 0:N-1;
 h1 = (-1).^n .* h0(N:-1:1);
 % synteza ? wed³ug schematu drzewa filtrów z rysunku 17.15
-c = [ 0 c 0 ]; % aproksymacje ?0
-d = [ 0 d 0 ]; % detale ?0
+c = [ 0 c 0 ]; % aproksymacje 
+d = [ 0 d 0 ]; % detale 
 c = conv(c,h0) + conv(d,h1);
 for n = 1 : niter
     for k = 1:length(c)
@@ -198,16 +202,18 @@ end
 % Wykresy koñcowe
 n1 = 2*(N-1)*niter : length(c1)-2*(N-1)*niter+1;
 figure(7); sgtitle('Analiza sygna³u sinusoidalnego');
-subplot(311); title('Sygna³ wejsciowy');
-plot(x1); grid;
+subplot(311);
+plot(x1); grid; title('Sygna³ wejsciowy');
 subplot(312);
 plot(n1,c1(n1)); title('Sygna³ wyjœciowy'); grid;
-subplot(313); title('Blad analizy'); grid; plot(n1, x1(n1)-c1(n1));
+subplot(313); grid; plot(n1, x1(n1)-c1(n1));
+title('Blad analizy');
 
 n2 = 2*(N-1)*niter : length(c2)-2*(N-1)*niter+1;
 figure(8); sgtitle('Analiza sygna³u losowego');
-subplot(311); title('Sygna³ wejsciowy');
-plot(x2); grid;
+subplot(311);
+plot(x2); grid; title('Sygna³ wejsciowy');
 subplot(312);
 plot(n2,c2(n2)); title('Sygna³ wyjœciowy'); grid;
-subplot(313); title('Blad analizy'); grid; plot(n2, x2(n2)-c2(n2));
+subplot(313); grid; plot(n2, x2(n2)-c2(n2));
+title('Blad analizy');

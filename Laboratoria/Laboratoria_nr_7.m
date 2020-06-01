@@ -1,10 +1,10 @@
-% Lab 7. Porównanie dzia³ania filtra rekursywnego i nierekursywnego. Metody
-% fir1 i butter.
+% Lab 7. Porównanie dzia³ania filtra rekursywnego i nierekursywnego.
+% Metody fir1 i butter.
 %                           Mateusz Krupnik'
 clc; clear all; close all;
 
 % Dane sygna³ów z lab. 6
-f1=100; f2=250; f3=400; fs=1000;    % Czestotliwosci skladowych i Nyquista
+f1=100; f2=250; f3=400; fs=1000;    % Czest. skladowych i Nyquista
 A1=1; A2=0.8; A3=0.65;              % Aplitudy skladowych
 t=0:(1/fs):1.023;                   % Wektor czasu
 % Sygna³ wymuszenia - sk³adowa 3 harmonicznych
@@ -129,7 +129,7 @@ x_fir2 = filter(b1, 1, x);
 
 % Wykresy
 figure(12);
-sgtitle(['Filtr srodkowoprzepustowy f_o=' num2str(fo1)...
+sgtitle(['Filtr srodkowoprzepustowy f_o=[' num2str(fo1)...
      ', ' num2str(fo2) ']']);
 subplot(311);
 plot(t, x); title('Sygna³ wymuszaj¹cy');
@@ -145,7 +145,7 @@ xlabel('Czas [s]'); ylabel('Amp.'); grid;
 
 
 figure(14);
-sgtitle(['Filtr srodkowoprzepustowy f_o=' num2str(fo1)...
+sgtitle(['Filtr srodkowoprzepustowy f_o=[' num2str(fo1)...
      ', ' num2str(fo2) ']']);
 subplot(311);
 plot(f_w, Wid(1,:)); title('Widmo sygna³u wymuszaj¹cego');
