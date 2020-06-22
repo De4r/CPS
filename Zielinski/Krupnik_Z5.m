@@ -11,7 +11,7 @@ z = j*[ -z2, -z1, z1, z2 ];
 odl = 0.5; p1 = 9.5; p2 = 10.5;	% BIEGUNY w pobli¿u osi urojonej
 p = [ -odl-j*p2, -odl-j*p1, -odl+j*p1, -odl+j*p2 ];
 WMAX=20; TMAX=20;               % max pulsacja, max czas obserwacji
-show_results(z, p, WMAX, TMAX, "przyklad 1.");
+show_results(z, p, WMAX, TMAX, "przyklad 1. metoda zer i biegunów");
 
 %% Przyk³ad 2: znajdowanie zer i biegunów zadanej transmitancji
 b=[ 0.66667 0 1 ];              % wspó³czynniki licznika transmitancji
@@ -19,7 +19,7 @@ a=[ 4.0001 5.0081 3.1650 1 ];   % wspó³czynniki mianownika transmitancji
 [z,p,wzm] = tf2zp(b,a);         % wspó³. wielomianów -> zera wielomianów
 z = z'; p = p';                 % wektor pionowy -> wektor poziomy
 WMAX=5; TMAX=25;                % max pulsacja, max czas obserwacji
-show_results(z, p, WMAX, TMAX, "przyklad 2.");
+show_results(z, p, WMAX, TMAX, "przyklad 2. z wielomianow transmitacji");
 
 %% Przyk³ad 3: projekt filtra górnoprzepustowego
 z1 = 0;                 % ZERA na osi urojonej
@@ -33,7 +33,7 @@ p4 = -1+j*2; p5 = -1-j*2;
 p6 = -1+j*3; p7 = -1-j*3;
 p = [ p1 p2 p3 p4 p5 p6 p7 ];
 WMAX=20; TMAX=5;        % max pulsacja, max czas obserwacji
-show_results(z, p, WMAX, TMAX, "przyklad 3.");
+show_results(z, p, WMAX, TMAX, "przyklad 3. metoda zer i biegunow");
 
 
 

@@ -6,7 +6,7 @@
 % 1) kszta³t dyskretnych baz: Fouriera, kosinusowej,
 % sinusowej, Hadamarda, Walsha
 % 2) dopasowanie bazy, przyk³adowa dekompozycja dwóch sygna³ów
-clear all; close all; clc; subplot(111);
+clear all; close all; clc;
 N=16;	% wybór liczby funkcji bazowych (wymiar przestrzeni wektorowej)
 n=0:N-1;	% indeksy wszystkich próbek poszczególnych funkcji bazowych
 NN=2*N;	% zmienna pomocnicza

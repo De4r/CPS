@@ -85,7 +85,7 @@ for i=1:4
     b = wzm;             % wielomian licznika B(z)
 %     z, p, b, a
     figure(4*i-3)
-    plot( real(p), imag(p), 'x' ); grid;
+    plot( real(p), imag(p), 'x' ); grid; axis equal;
     title(['Po³o¿enie biegunów dla filtra:' filtr ' - ' typ]);
     xlabel('real'); ylabel('imag');
     
@@ -220,7 +220,7 @@ for i=1:4
     epsi = sqrt(10^(apass/10)-1);
     D = asinh(1/epsi)/N; R1 = sinh(D); R2 = cosh(D);
 
-    % Obliczenie biegunów trans. prototypu - funcja buttap i zp2tf
+    % Obliczenie biegunów trans. prototypu - funcja zp2tf
     dfi0 = (2*pi)/(2*N);                    % k¹t „kawa³ka tortu”
     fi = pi/2 + dfi0/2 + (0 : N-1)*dfi0;    % k¹ty biegunów
     p1 = R1 * exp(1i*fi);                    % bieguny R1

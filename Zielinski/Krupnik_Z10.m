@@ -42,7 +42,8 @@ for i=1:2
    % Po³o¿eine zer i beignów
    figure(6*i - 5);
    plot(s, c, '-k', real(z), imag(z), 'or', real(p), imag(p), 'xb');
-   title(["Zera i biguny filtra: " + filtr ]); legend('Zera','Bieguny');
+   title(["Zera i biguny filtra: " + filtr ]);
+   legend('okreg', 'Zera','Bieguny');
    grid on;
    
    % Obliczenia wspo³czynników a i b z zer i biegnow

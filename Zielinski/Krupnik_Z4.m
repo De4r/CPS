@@ -52,7 +52,7 @@ for k=1:M
     subplot(311); plot(ty, fun_aproks1);
     grid; hold on; title('Kolejna funkcja aproksymuj¹ca');
     subplot(312); plot(ty,y1);
-    grid; title('Kolejny sk³adnik sumy'); hold on;
+    grid; title('Kolejny sk³adnik sumy'); hold on; pause(1);
 end
 % Wykres caloœci
 subplot(313); plot(ty,y); grid; title('Suma skladowych');
